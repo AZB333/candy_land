@@ -220,4 +220,6 @@ void playRockPaperScissors(Player players[]){
         players[0].removeCandy(lowerP1B);
         return;
     }
+
+    cout << "penis";
 }
