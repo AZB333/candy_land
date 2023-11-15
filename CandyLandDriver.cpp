@@ -4,6 +4,8 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <cstdlib>
+#include <ctime>
 #include "CLPlayer.h"
 using namespace std;
 
@@ -12,6 +14,23 @@ using namespace std;
 what questions for reciation this week:
 how much does stamina deplete and increase by each turn
 */
+
+/*
+steps: push after each step
+1. make board - done
+2. make store class - done
+3. make player class
+4. make card drawing function
+5. define data members, getters and setters
+6. create necessary functions
+7. populate necessary functions
+8. 
+9. 
+10.  
+*/
+
+
+
 
 
 /*
@@ -221,5 +240,4 @@ void playRockPaperScissors(Player players[]){
         return;
     }
 
-    cout << "penis";
 }

@@ -6,8 +6,16 @@
 using namespace std;
 
 int main(){
-    int x = rand() % 5;
-    int y = rand() % 5;
-    cout << x << endl;
-    cout << y << endl;
+    //generate random members
+    //how often a calamity occurs
+    //generate a random card draw and a deck of cards
+
+
+    //need to seed a random number generator
+    srand((unsigned) time(NULL)); //passes the current time in seconds since 01/01/1900
+    cout << rand() << endl; //no upper bound
+    for(int i = 0; i < 5; i++){
+        int x = rand() % 100 + 1;
+        cout << x << "  ";
+    }
 }
