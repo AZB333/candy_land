@@ -12,7 +12,7 @@ struct Candy
     string effect;
     int effect_value;
     string candy_type;
-    double price;
+    int price;
 };
 
 

@@ -7,8 +7,15 @@
 #include <cstdlib>
 #include <ctime>
 #include "CLPlayer.h"
-using namespace std;
+#include "Board.h"
+#include "Store.h"
 
+struct Character{
+    string name;
+    int stamina;
+    int gold;
+    vector<string> candies;
+};
 
 /*
 what questions for reciation this week:
@@ -17,8 +24,6 @@ how much does stamina deplete and increase by each turn
 In the first 27 tiles, a candy store will be on a magenta-colored tile. 
 Between tiles 28 and 54, a candy store will appear on a green-colored tile. 
 And from tile 55 to 82, a candy store will be on a blue tile.
-
-
 */
 
 /*
@@ -61,6 +66,7 @@ vector<Candy> readCandy(string file_name, vector<Candy> candies){ //add extra ca
     string line;
     candyFile.open(file_name);
     if(candyFile.fail()){
+        cout << "Failed to load text file\n";
         return candies;
     }
     else{
@@ -72,6 +78,7 @@ vector<Candy> readCandy(string file_name, vector<Candy> candies){ //add extra ca
         string candyType = "";
         string price = "";
         int actualPrice = 0;
+        getline(candyFile, line);
         while(getline(candyFile, line)){
             stringstream ss(line);
             int iterator = 0;
@@ -86,24 +93,90 @@ vector<Candy> readCandy(string file_name, vector<Candy> candies){ //add extra ca
                     description = line;
                 } else if(iterator == 2){
                     iterator++;
-                    price = line;
-                    actualPrice = stoi(price);
+                    effect = line;
                 } else if(iterator == 3){
                     iterator++;
+                    effectValue = line;
+                    actualEffectValue = stoi(effectValue);
+                } else if(iterator == 4){
+                    iterator++;
                     candyType = line;
+                } else if(iterator == 5){
+                    price = line;
+                    actualPrice = stoi(price);
                 }
-               
             }
             current_candy.name = name;
             current_candy.description = description;
+            current_candy.effect = effect;
+            current_candy.effect_value = actualEffectValue;
+            current_candy.candy_type = candyType;
             current_candy.price = actualPrice;
-            current_candy. candy_type = candyType;
             candies.push_back(current_candy);
             }
-           
         }
+    }
+    candyFile.close();
     return candies;
 }
+
+vector<Character> readCharacter(string fileName, vector<Character> characters){
+    ifstream characterFile;
+    characterFile.open(fileName);
+    if(characterFile.fail()){
+        cout << "Failed to open text file\n";
+        return characters;
+    }
+    else{
+        //character name ,stamina, gold,candies
+        string name = "";
+        string stamina = "";
+        int actualStamina = 0;
+        string gold = "";
+        int actualGold = 0;
+        vector<string> candyNames;
+        string line;
+        string candyLine;
+        getline(characterFile, line);
+        while(getline(characterFile, line)){
+            stringstream ss(line);
+            int iterator = 0;
+            Character current_character;
+            if(line.size() != 0){
+            while(getline(ss, line, '|')){
+                if(iterator == 0){
+                    iterator ++;
+                    name = line;
+                } else if(iterator == 1){
+                    iterator++;
+                    stamina = line;
+                    actualStamina = stoi(stamina);
+                } else if(iterator == 2){
+                    iterator++;
+                    gold = line;
+                    actualGold = stoi(gold);
+                } else if(iterator == 3){
+                    iterator++;
+                    stringstream candySS(line);
+                    while(getline(candySS, line, ',')){
+                        candyNames.push_back(line);
+                        //just the candy name in file, gotta find name from allcandies then add it?
+                    }
+                }
+            }
+            current_character.name = name;
+            current_character.stamina = actualStamina;
+            current_character.gold = actualGold;
+            for(int i = 0; i < candyNames.size(); i++){//runs once then breaks
+                current_character.candies.push_back(candyNames[i]);
+            }
+            characters.push_back(current_character);
+            }
+        }
+    }
+    characterFile.close();
+    return characters;
+
 }
 
 
@@ -247,15 +320,16 @@ void playRockPaperScissors(Player players[]){ //change to one player
 
 
 int main(){
-    
+    Board game_board;
     Player player1;
     Player player2;
-    string fileName = "candytxt"; //change to user input later
-    player1.printInventory();
-    cout << endl;
+    string candyFileName = "candy.txt";
+    string characterFileName = "characters.txt";
     vector<Candy> allCandies;
-    allCandies = readCandy(fileName, allCandies);
-    cout << allCandies[3].name; //this is failing
+    vector<Character> allCharacters;
+    allCandies = readCandy(candyFileName, allCandies);
+    allCharacters = readCharacter(characterFileName, allCharacters);
+    cout << allCharacters[1].candies[2];
     //start by opening every file needed and declaring all necessary variables
     //loading candy and character files
     //readCandy() and readCharacters()

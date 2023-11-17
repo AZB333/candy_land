@@ -1,15 +1,9 @@
 #ifndef CLPLAYER_H
 #define CLPLAYER_H
 #include <iostream>
+#include "Store.h"
 using namespace std;
 
-struct Candy{ 
-    string name; 
-    string description; 
-    double price; 
-    string candy_type; 
-
-}; 
 
 class Player{
     private:

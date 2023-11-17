@@ -80,7 +80,7 @@ void Player::printInventory(){
     }
 }
 Candy Player::findCandy(string candy_name){
-    Candy desiredCandy = {"","",0,""};
+    Candy desiredCandy = {"","","",0,"",0};
     string lowerCandyName = candy_name;//lower parameter
     string lowerInventoryName;//lower inventory
     for(int i = 0; i < lowerCandyName.length(); i++){
