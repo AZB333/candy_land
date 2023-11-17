@@ -47,63 +47,6 @@ candy array has max size of nine, if player has nine, they have to substitue a c
 fout to a finsihed stats file called results.txt    
 */
 
-vector<Candy> readCandy(string file_name, vector<Candy> candies){ //add extra candy members
-    cout << fixed << setprecision(2);
-    ifstream candyFile;
-    string line;
-    candyFile.open(file_name);
-    if(candyFile.fail()){
-        return candies;
-    }
-    else{
-        string name = "";
-        string description = "";
-        string effect = "";
-        string effectValue = "";
-        int actualEffectValue = 0;
-        string candyType = "";
-        string price = "";
-        int actualPrice = 0;
-        while(getline(candyFile, line)){
-            stringstream ss(line);
-            int iterator = 0;
-            Candy current_candy;
-            if(line.size() != 0){
-            while(getline(ss, line, '|')){
-                if(iterator == 0){
-                    iterator ++;
-                    name = line;
-                } else if(iterator == 1){
-                    iterator++;
-                    description = line;
-                } else if(iterator == 2){
-                    iterator++;
-                    price = line;
-                    actualPrice = stoi(price);
-                } else if(iterator == 3){
-                    iterator++;
-                    candyType = line;
-                }
-               
-            }
-            current_candy.name = name;
-            current_candy.description = description;
-            current_candy.price = actualPrice;
-            current_candy. candy_type = candyType;
-            candies.push_back(current_candy);
-            }
-           
-        }
-    return candies;
-}
-}
-
-
-
-
-
-
-
 
 void playRockPaperScissors(Player players[]){
     string player1bet;
@@ -240,4 +183,93 @@ void playRockPaperScissors(Player players[]){
         return;
     }
 
+}
+
+
+int main(){
+    //start by opening every file needed and declaring all necessary variables
+    //loading candy and character files
+    //readCandy() and readCharacters()
+    /*
+    actual main:
+    int numParticipants;
+    string player1name;
+    string player2name;
+    char candyStore1Visit;
+    cout << "Welcome to the game of Candyland. Please enter the number of participants\n";
+    cin >> numParticipants;
+    while(numParticipants != 2){
+        cout << "Please choose 2 participants\n";
+        cin >> numParticipants;
+    }
+    
+    cout << "Enter player name:\n";
+    cin >> player1Name;
+    cout << "Awesome! Here is a list of characters a player can select from\n";
+    for(int i = 0; i < 4; i++){
+        player[i].displayInventory();
+    }
+    cout << endl << "The selected character is\n";
+    cin >> player1name;
+    while(player1name != FOUND IN CHARACTER FILE){
+        cin.clear();
+        cout << "Not a valid character, try again\n";
+        cin >> player1name;
+    }
+    cout << "Do you want to visit the candy store?\n";
+    cin >> candyStore1Visit;
+    while((candyStore1Visit != 'y' || candyStore1Visit != 'y') && (candyStore1Visit != 'y' || candyStore1Visit != 'y')){
+        cin.clear();
+        cout << "Invalid option, try again\n";
+        cin >> candyStore1Visit;
+    }
+    if(candyStore1Visit != 'y' || candyStore1Visit == 'Y'){
+        display candy store
+    }
+
+    --------------------------------------
+    ***do the same thing for player two***
+    --------------------------------------
+
+    once both players have chosen their characters, its time to start the game
+
+    while(not the end){
+        say its current player's turn, ask to draw card, use candy, or show player stats
+        if draw card
+            board.drawcard, cout card color, show updated position board.display
+        if use candy
+            display current player's candies, ask which one to use, update stats with setters
+        if show stats
+            display player stats (stamina, gold, and candy)
+        else
+            invalid
+        
+        ------------------------------------------------------------------
+        calamities
+        40% change for a calamity to occur, out of those 40%
+        30% candy bandits - lose between 1-10 gold
+        35% lost in labyrinth - lose turn unless win rps, then gain turn back, bool hasTurn
+        15% avalanche - lose 5-10 stamina, unless win rps, then fine, bool hasTurn
+        20% taffy trap - lose next turn, unless magical candy in inventory, bool hasTurn
+        ------------------------------------------------------------------
+
+
+    }
+
+
+    ------------------------
+    the end
+    congradulate the player who won and print their stats
+    Name of the player and their character
+    Amount of Gold Left
+    Stamina Left
+    Candies in the player’s possession
+
+    fout to the results.txt file, ill choose how to format it
+    ------------------------------
+
+
+    make sure to close every file
+    
+    */
 }

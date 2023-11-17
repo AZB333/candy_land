@@ -9,7 +9,7 @@
 
 Store::Store(){
     for(int i = 0; i < _MAX_STORE_CANDY; i++){
-        _store_inventory[i] = {"Empty", "","",0,"",0};
+        _store_inventory[i] = {"Empty", "","",0,"",0}; 
     }
 }
 
@@ -87,6 +87,7 @@ vector<Candy> Store::readCandies(string file_name, vector<Candy> store_candies){
 
 void Store::populateStore(string fileName){
     vector<Candy> allCandies;
+    srand((unsigned) time(NULL));
     allCandies = readCandies(fileName, allCandies);
     for(int j = 0; j < 4; j++){
         _store_inventory[j] = allCandies[rand() % allCandies.size()];

@@ -19,3 +19,60 @@ int main(){
         cout << x << "  ";
     }
 }
+
+
+
+/*just throwing this here in case its needed
+
+vector<Candy> readCandy(string file_name, vector<Candy> candies){ //add extra candy members
+    cout << fixed << setprecision(2);
+    ifstream candyFile;
+    string line;
+    candyFile.open(file_name);
+    if(candyFile.fail()){
+        return candies;
+    }
+    else{
+        string name = "";
+        string description = "";
+        string effect = "";
+        string effectValue = "";
+        int actualEffectValue = 0;
+        string candyType = "";
+        string price = "";
+        int actualPrice = 0;
+        while(getline(candyFile, line)){
+            stringstream ss(line);
+            int iterator = 0;
+            Candy current_candy;
+            if(line.size() != 0){
+            while(getline(ss, line, '|')){
+                if(iterator == 0){
+                    iterator ++;
+                    name = line;
+                } else if(iterator == 1){
+                    iterator++;
+                    description = line;
+                } else if(iterator == 2){
+                    iterator++;
+                    price = line;
+                    actualPrice = stoi(price);
+                } else if(iterator == 3){
+                    iterator++;
+                    candyType = line;
+                }
+               
+            }
+            current_candy.name = name;
+            current_candy.description = description;
+            current_candy.price = actualPrice;
+            current_candy. candy_type = candyType;
+            candies.push_back(current_candy);
+            }
+           
+        }
+    return candies;
+}
+}
+
+*/

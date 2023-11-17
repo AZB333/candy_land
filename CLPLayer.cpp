@@ -12,7 +12,7 @@ Player::Player(){
 }
 Player::Player(int stamina, double gold, string effect, Candy inventory[], const int candy_amount){
     _stamina = stamina;
-    _gold = gold;
+    _gold = gold; 
     _effect = effect;
     for(int i = 0; i < candy_amount; i++){
         _inventory[i] = inventory[i];

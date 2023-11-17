@@ -13,7 +13,7 @@ struct Candy{
 
 class Player{
     private:
-        const static int _MAX_CANDY_AMOUNT = 4;
+        const static int _MAX_CANDY_AMOUNT = 9;
         int _stamina;
         double _gold;
         string _effect;
@@ -35,7 +35,7 @@ class Player{
 
         void printInventory();
         Candy findCandy(string);
-        bool addCandy(Candy);
+        bool addCandy(Candy); 
         bool removeCandy(string);
 
 
