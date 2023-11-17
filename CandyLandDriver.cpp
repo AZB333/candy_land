@@ -13,6 +13,12 @@ using namespace std;
 /*
 what questions for reciation this week:
 how much does stamina deplete and increase by each turn
+
+In the first 27 tiles, a candy store will be on a magenta-colored tile. 
+Between tiles 28 and 54, a candy store will appear on a green-colored tile. 
+And from tile 55 to 82, a candy store will be on a blue tile.
+
+
 */
 
 /*
@@ -48,7 +54,61 @@ fout to a finsihed stats file called results.txt
 */
 
 
-void playRockPaperScissors(Player players[]){
+
+vector<Candy> readCandy(string file_name, vector<Candy> candies){ //add extra candy members
+    cout << fixed << setprecision(2);
+    ifstream candyFile;
+    string line;
+    candyFile.open(file_name);
+    if(candyFile.fail()){
+        return candies;
+    }
+    else{
+        string name = "";
+        string description = "";
+        string effect = "";
+        string effectValue = "";
+        int actualEffectValue = 0;
+        string candyType = "";
+        string price = "";
+        int actualPrice = 0;
+        while(getline(candyFile, line)){
+            stringstream ss(line);
+            int iterator = 0;
+            Candy current_candy;
+            if(line.size() != 0){
+            while(getline(ss, line, '|')){
+                if(iterator == 0){
+                    iterator ++;
+                    name = line;
+                } else if(iterator == 1){
+                    iterator++;
+                    description = line;
+                } else if(iterator == 2){
+                    iterator++;
+                    price = line;
+                    actualPrice = stoi(price);
+                } else if(iterator == 3){
+                    iterator++;
+                    candyType = line;
+                }
+               
+            }
+            current_candy.name = name;
+            current_candy.description = description;
+            current_candy.price = actualPrice;
+            current_candy. candy_type = candyType;
+            candies.push_back(current_candy);
+            }
+           
+        }
+    return candies;
+}
+}
+
+
+
+void playRockPaperScissors(Player players[]){ //change to one player
     string player1bet;
     string player2bet;
     string lowerP1B;
@@ -59,7 +119,7 @@ void playRockPaperScissors(Player players[]){
     char p2c;
    
     for(int i = 0; i < 2; i++){
-        if(players[i].getCandyAmount() == 0 || players[i].getCandyAmount() == 4){
+        if(players[i].getCandyAmount() == 0 || players[i].getCandyAmount() == 9){
             cout << "Not enough candy!\n";
             return;
         }
@@ -187,11 +247,21 @@ void playRockPaperScissors(Player players[]){
 
 
 int main(){
+    
+    Player player1;
+    Player player2;
+    string fileName = "candytxt"; //change to user input later
+    player1.printInventory();
+    cout << endl;
+    vector<Candy> allCandies;
+    allCandies = readCandy(fileName, allCandies);
+    cout << allCandies[3].name; //this is failing
     //start by opening every file needed and declaring all necessary variables
     //loading candy and character files
     //readCandy() and readCharacters()
     /*
     actual main:
+    bool endOfGame = false;
     int numParticipants;
     string player1name;
     string player2name;
@@ -199,6 +269,7 @@ int main(){
     cout << "Welcome to the game of Candyland. Please enter the number of participants\n";
     cin >> numParticipants;
     while(numParticipants != 2){
+        cin.clear();
         cout << "Please choose 2 participants\n";
         cin >> numParticipants;
     }
@@ -218,7 +289,7 @@ int main(){
     }
     cout << "Do you want to visit the candy store?\n";
     cin >> candyStore1Visit;
-    while((candyStore1Visit != 'y' || candyStore1Visit != 'y') && (candyStore1Visit != 'y' || candyStore1Visit != 'y')){
+    while((candyStore1Visit != 'y' || candyStore1Visit != 'Y') && (candyStore1Visit != 'n' || candyStore1Visit != 'N')){
         cin.clear();
         cout << "Invalid option, try again\n";
         cin >> candyStore1Visit;
@@ -233,7 +304,7 @@ int main(){
 
     once both players have chosen their characters, its time to start the game
 
-    while(not the end){
+    while(endOfGame == false){
         say its current player's turn, ask to draw card, use candy, or show player stats
         if draw card
             board.drawcard, cout card color, show updated position board.display
@@ -253,7 +324,16 @@ int main(){
         20% taffy trap - lose next turn, unless magical candy in inventory, bool hasTurn
         ------------------------------------------------------------------
 
+        ---------------------------------------
+        candy store
+        use boarddriver stuff, add three candies to the players inventory
+        display store
+        set candies appropriately
+        -------------------------------
 
+        if(player is at tile 83){
+            endOfGame = true;
+        }
     }
 
 

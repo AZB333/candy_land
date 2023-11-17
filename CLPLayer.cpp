@@ -5,7 +5,7 @@ Player::Player(){
     _stamina = 0;
     _gold = 0;
     _effect = "";
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < 9; i++){
         _inventory[i].name = "Empty";
     }
     _candy_amount = 0;
@@ -20,11 +20,11 @@ Player::Player(int stamina, double gold, string effect, Candy inventory[], const
             _inventory[i].name = "Empty";
         }
     }
-    for(int i = candy_amount; i < 4; i++){
+    for(int i = candy_amount; i < 9; i++){
         _inventory[i].name = "Empty";
     }
     int actual_candy = 0;
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < 9; i++){
         if(_inventory[i].name != "Empty"){
             actual_candy++;
         }
@@ -68,21 +68,13 @@ void Player::setEffect(string effect){
 }
 
 void Player::printInventory(){
-    for(int i = getCandyAmount(); i < 4; i++){
+    for(int i = getCandyAmount(); i < 9; i++){
         _inventory[i].name = "Empty";
     }
 
     for(int i = 0; i < _MAX_CANDY_AMOUNT; i++){
-        if(i != 3){
-        cout << "|[" << _inventory[i].name << "]";
-        }
-        else{
-            cout << "|[" << _inventory[i].name << "]|";
-        }
-        if(i == 1){
-            cout <<  "|" << endl;
-        }
-        if(i == 3){
+        cout << "[" << _inventory[i].name << "]";
+        if(i == 2 || i == 5){
             cout << endl;
         }
     }
@@ -94,7 +86,7 @@ Candy Player::findCandy(string candy_name){
     for(int i = 0; i < lowerCandyName.length(); i++){
         lowerCandyName[i] = tolower(candy_name[i]); //make lowerCandy lower
     }
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < 9; i++){
         lowerInventoryName = _inventory[i].name;
         for(int j = 0; j < _inventory[i].name.length(); j++){//stops right here
             lowerInventoryName[j] = tolower(_inventory[i].name[j]);//make inventory lower
@@ -107,7 +99,7 @@ Candy Player::findCandy(string candy_name){
     return desiredCandy;
 }
 bool Player::addCandy(Candy c){
-    if(getCandyAmount() == 4){
+    if(getCandyAmount() == 9){
         return false;
     }
     else{
@@ -125,7 +117,7 @@ bool Player::removeCandy(string name){
     }
     bool foundFlag = false;
     int removeIndex = -1;
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < 9; i++){
         lowerInventory = _inventory[i].name;
         for(int j = 0; j < lowerInventory.length(); j++){
             lowerInventory[j] = tolower(_inventory[i].name[j]);

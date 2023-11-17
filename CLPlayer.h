@@ -17,7 +17,7 @@ class Player{
         int _stamina;
         double _gold;
         string _effect;
-        Candy _inventory[4];
+        Candy _inventory[9];
         int _candy_amount;
     public:
         Player();

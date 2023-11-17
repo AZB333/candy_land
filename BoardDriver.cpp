@@ -25,8 +25,7 @@ int main()
         }
     }
 
-    board.displayBoard();
-
+    // board.displayBoard();
     //go across entire map, if current position has a candy store, display store's candies
 
     return 0;
