@@ -26,7 +26,9 @@ void Board::resetBoard()
         _candy_store_position[i] = -1;
     }
 
-    _player_position = 0;
+    _player1_position = 0;
+    _player2_position = 0;
+
 }
 
 void Board::displayTile(int position)
@@ -37,9 +39,12 @@ void Board::displayTile(int position)
     }
     Tile target = _tiles[position];
     cout << target.color << " ";
-    if (position == _player_position)
+    if (position == _player1_position)
     {
-        cout << "X";
+        cout << "1";
+    }
+    else if(position == _player2_position){
+        cout << "2";
     }
     else
     {
@@ -90,11 +95,21 @@ void Board::displayBoard()
     cout << ORANGE << "Castle" << RESET << endl;
 }
 
-bool Board::setPlayerPosition(int new_position)
+bool Board::setPlayer1Position(int new_position)
 {
     if (new_position >= 0 && new_position < _BOARD_SIZE)
     {
-        _player_position = new_position;
+        _player1_position = new_position;
+        return true;
+    }
+    return false;
+}
+
+bool Board::setPlayer2Position(int new_position)
+{
+    if (new_position >= 0 && new_position < _BOARD_SIZE)
+    {
+        _player2_position = new_position;
         return true;
     }
     return false;
@@ -110,9 +125,13 @@ int Board::getCandyStoreCount() const
     return _candy_store_count;
 }
 
-int Board::getPlayerPosition() const
+int Board::getPlayer1Position() const
 {
-    return _player_position;
+    return _player1_position;
+}
+int Board::getPlayer2Position() const
+{
+    return _player2_position;
 }
 
 bool Board::addCandyStore(int position)
@@ -138,13 +157,23 @@ bool Board::isPositionCandyStore(int board_position)
     return false;
 }
 
-bool Board::movePlayer(int tile_to_move_forward)
+bool Board::movePlayer1(int tile_to_move_forward)
 {
-    int new_player_position = tile_to_move_forward + _player_position;
+    int new_player_position = tile_to_move_forward + _player1_position;
     if(new_player_position < 0 || new_player_position >= _BOARD_SIZE)
     {
         return false;
     }
-    _player_position = new_player_position;
+    _player1_position = new_player_position;
+    return true;
+}
+bool Board::movePlayer2(int tile_to_move_forward)
+{
+    int new_player_position = tile_to_move_forward + _player2_position;
+    if(new_player_position < 0 || new_player_position >= _BOARD_SIZE)
+    {
+        return false;
+    }
+    _player2_position = new_player_position;
     return true;
 }

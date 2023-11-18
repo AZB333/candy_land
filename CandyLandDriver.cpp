@@ -319,7 +319,80 @@ void playRockPaperScissors(Player players[]){ //change to one player
 }
 
 
+void Calamities(){
+    srand((unsigned) time(NULL));
+    char bandits;
+    char labyrinth;
+    char avalanche;
+    bool trap = false;
+    int random = rand() % 100 + 1;
+    if(random >=1 && random <=12){
+        cout << "candy bandits! do you wanna play rock paper scissors to see if you actually lose or not?\n";
+        cin >> bandits;
+        while((bandits != 'y' && bandits != 'Y') && (bandits != 'n' && bandits != 'N')){
+        cin.clear();
+        cout << "Invalid option, try again\n";
+        cin >> bandits;
+        
+    }
+    if(bandits == 'y' || bandits == 'Y'){
+            cout << "play rock paper scissors here\n";
+        }
+        else if(bandits == 'n' || bandits == 'N'){
+            cout << "take the L\n";
+        }
+    
+    }
+    else if(random >12 && random <= 26){
+            cout << "labyrinth! do you wanna play rock paper scissors to see if you actually lose or not?\n";
+            cin >> labyrinth;
+            while((labyrinth != 'y' && labyrinth != 'Y') && (labyrinth != 'n' && labyrinth != 'N')){
+            cin.clear();
+            cout << "Invalid option, try again\n";
+            cin >> labyrinth;
+            
+        }
+        if(labyrinth == 'y' || labyrinth == 'Y'){
+                cout << "play rock paper scissors here\n";
+            }
+            else if(labyrinth == 'n' || labyrinth == 'N'){
+                cout << "take the L\n";
+            }
+    }
+    else if(random >26 && random <= 32){
+            cout << "avalanche! do you wanna play rock paper scissors to see if you actually lose or not?\n";
+            cin >> avalanche;
+            while((avalanche != 'y' && avalanche != 'Y') && (avalanche != 'n' && avalanche != 'N')){
+            cin.clear();
+            cout << "Invalid option, try again\n";
+            cin >> avalanche;
+            
+        }
+        if(avalanche == 'y' || avalanche == 'Y'){
+                cout << "play rock paper scissors here\n";
+            }
+            else if(avalanche == 'n' || avalanche == 'N'){
+                cout << "take the L\n";
+            }
+    }
+    else if(random >32 && random <= 40){
+        cout << "candy trap! do you wanna have a magical candy?\n";
+        //check for the candy with .find
+        if(trap == false){
+            cout << "tough luck loser\n";
+        }
+        else{
+            cout << "hey nice job\n";
+        }
+    }
+    else{
+        cout << "normal\n";
+    }
+}
+
+
 int main(){
+    srand((unsigned) time(NULL));
     Board game_board;
     Player player1;
     Player player2;
@@ -329,7 +402,9 @@ int main(){
     vector<Character> allCharacters;
     allCandies = readCandy(candyFileName, allCandies);
     allCharacters = readCharacter(characterFileName, allCharacters);
-    cout << allCharacters[1].candies[2];
+    game_board.movePlayer1(1);
+    // game_board.displayBoard();
+    Calamities();
     //start by opening every file needed and declaring all necessary variables
     //loading candy and character files
     //readCandy() and readCharacters()
@@ -368,7 +443,7 @@ int main(){
         cout << "Invalid option, try again\n";
         cin >> candyStore1Visit;
     }
-    if(candyStore1Visit != 'y' || candyStore1Visit == 'Y'){
+    if(candyStore1Visit == 'y' || candyStore1Visit == 'Y'){
         display candy store
     }
 

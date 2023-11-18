@@ -16,7 +16,25 @@ int main(){
     cout << rand() << endl; //no upper bound
     for(int i = 0; i < 5; i++){
         int x = rand() % 100 + 1;
-        cout << x << "  ";
+        // cout << x << "  ";
+    }
+
+    ///////////////calamities random work//////////////////////
+    int random = rand() % 100 + 1;
+    if(random >=1 && random <=12){
+        cout << "candy bandits\n";
+    }
+    else if(random >12 && random <= 26){
+        cout << "labyrinth\n";
+    }
+    else if(random >26 && random <= 32){
+        cout << "avalanche\n";
+    }
+    else if(random >32 && random <= 40){
+        cout << "candy trap\n";
+    }
+    else{
+        cout << "normal\n";
     }
 }
 

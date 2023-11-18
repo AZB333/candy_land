@@ -6,7 +6,7 @@ using namespace std;
 int main()
 {
     string fileName = "candy.txt";
-    vector<Candy> allCandies;
+    vector<Candy> allCandies; 
     Candy storeCandies[4];
     Board board;
     int iterator = 1;
@@ -14,7 +14,7 @@ int main()
     board.addCandyStore(56);
     board.addCandyStore(71);
     for(int i = 0; i < 83; i++){
-        board.movePlayer(1);
+        board.movePlayer1(1);
         if(board.isPositionCandyStore(i)){
             cout << "Welcome to Store " << iterator << ". Here's our selection!\n";
             Store store;
