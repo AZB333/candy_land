@@ -167,7 +167,7 @@ vector<Character> readCharacter(string fileName, vector<Character> characters){
             current_character.name = name;
             current_character.stamina = actualStamina;
             current_character.gold = actualGold;
-            for(int i = 0; i < candyNames.size(); i++){//runs once then breaks
+            for(int i = 0; i < candyNames.size(); i++){
                 current_character.candies.push_back(candyNames[i]);
             }
             characters.push_back(current_character);
@@ -181,150 +181,14 @@ vector<Character> readCharacter(string fileName, vector<Character> characters){
 
 
 
-void playRockPaperScissors(Player players[]){ //change to one player
-    string player1bet;
-    string player2bet;
-    string lowerP1B;
-    string lowerP2B;
-    string lowerFind;
-    bool betStatus = false;
-    char p1c;
-    char p2c;
-   
-    for(int i = 0; i < 2; i++){
-        if(players[i].getCandyAmount() == 0 || players[i].getCandyAmount() == 9){
-            cout << "Not enough candy!\n";
-            return;
-        }
-    }
-    cout << "Player 1 Inventory\n";
-    players[0].printInventory();
-    cout << "Player 1: Select candy to bet\n";
-    getline(cin, player1bet);
-    lowerP1B = player1bet;
-    while(player1bet.length() == 0){ //makes sure it isnt empty
-            cin.clear();
-            cout << "Invalid Selection!" << endl;
-            cin.clear();
-            getline(cin, player1bet);
-    }
-    for(int i = 0; i < player1bet.length(); i++){ //makes everything lowercase
-        lowerP1B[i] = tolower(player1bet[i]);
-    }
-    lowerFind = lowerP1B;
-    for(int i = 0; i < players[0].findCandy(lowerP1B).name.length(); i++) {
-        lowerFind[i] = tolower(players[0].findCandy(lowerP1B).name[i]);
-    }
-    if(lowerFind == lowerP1B){ //if name is found, proceed
-        betStatus = true;
-    }
-    while(betStatus == false){
-        cout << "Invalid Selection!\n"; //this is the problem
-        cin.clear();
-        getline(cin, player1bet);
-        while(player1bet.length() == 0){ //makes sure it isnt empty
-            cin.clear();
-            cout << "Invalid Selection!" << endl;
-            cin.clear();
-            getline(cin, player1bet);
-        }
-        lowerP1B = player1bet;
-        for(int i = 0; i < player1bet.length(); i++){ //makes everything lowercase
-        lowerP1B[i] = tolower(player1bet[i]);
-        }
-        if(players[0].findCandy(lowerP1B).name == lowerP1B){
-            betStatus = true;
-        }
-        else{
-            betStatus = false;
-        }
-    }
-    cout << "Player 2 Inventory\n";
-    players[1].printInventory();
-    cout << "Player 2: Select candy to bet\n";
-    getline(cin, player2bet);
-    lowerP2B = player2bet;
-    while(player2bet.length() == 0){ //makes sure it isnt empty
-            cin.clear();
-            cout << "Invalid Selection!" << endl;
-            cin.clear();
-            getline(cin, player2bet);
-    }
-    for(int i = 0; i < player2bet.length(); i++){ //makes everything lowercase
-        lowerP2B[i] = tolower(player2bet[i]);
-    }
-    lowerFind = lowerP2B;
-    for(int i = 0; i < players[1].findCandy(lowerP2B).name.length(); i++) {
-        lowerFind[i] = tolower(players[1].findCandy(lowerP2B).name[i]);
-    }
-    if(lowerFind == lowerP2B){ //if name is found, proceed
-        betStatus = true;
-    }
-    while(betStatus == false){
-        cout << "Invalid Selection!\n"; //this is the problem
-        cin.clear();
-        getline(cin, player2bet);
-        while(player2bet.length() == 0){ //makes sure it isnt empty
-            cin.clear();
-            cout << "Invalid Selection!" << endl;
-            cin.clear();
-            getline(cin, player2bet);
-        }
-        lowerP2B = player2bet;
-        for(int i = 0; i < player2bet.length(); i++){ //makes everything lowercase
-        lowerP2B[i] = tolower(player2bet[i]);
-        }
-        if(players[1].findCandy(lowerP2B).name == lowerP2B){
-            betStatus = true;
-        }
-        else{
-            betStatus = false;
-        }
-    }
-    cout << "Player 1: Enter r, p, or s\n";
-    cin >> p1c;
-    while(p1c != 'r' && p1c != 'p' && p1c != 's'){
-        cout << "Invalid selection!\n";
-        cin >> p1c;
-    }
-    cout << "Player 2: Enter r, p, or s\n";
-    cin >> p2c;
-    while(p2c != 'r' && p2c != 'p' && p2c != 's'){
-        cout << "Invalid selection!\n";
-        cin >> p2c;
-    }
-   
-    while(p1c == p2c){
-        cout << "Tie! Play again\n";
-        cout << "Player 1: Enter r, p, or s\n";
-        cin >> p1c;
-        cout << "Player 2: Enter r, p, or s\n";
-        cin >> p2c;
-    }
-    if((p1c == 'r' && p2c == 's') || (p1c == 'p' && p2c == 'r') || (p1c == 's' && p2c == 'p')){
-        cout << "Player 1 has won " << player2bet << " from player 2!\n";
-        Candy addedCandy = players[1].findCandy(lowerP2B);
-        players[0].addCandy(addedCandy);
-        players[1].removeCandy(player2bet);
-        return;
-    }
-    else if((p2c == 'r' && p1c == 's') || (p2c == 'p' && p1c == 'r') || (p2c == 's' && p1c == 'p')){
-        cout << "Player 2 has won " << player1bet << " from player 1!\n";
-        Candy addedCandy = players[0].findCandy(lowerP1B);
-        players[1].addCandy(addedCandy);
-        players[0].removeCandy(lowerP1B);
-        return;
-    }
 
-}
-
-
-void Calamities(){
+void Calamities(Player player){
     srand((unsigned) time(NULL));
     char bandits;
     char labyrinth;
     char avalanche;
     bool trap = false;
+    bool rpsStatus;
     int random = rand() % 100 + 1;
     if(random >=1 && random <=12){
         cout << "candy bandits! do you wanna play rock paper scissors to see if you actually lose or not?\n";
@@ -336,7 +200,13 @@ void Calamities(){
         
     }
     if(bandits == 'y' || bandits == 'Y'){
-            cout << "play rock paper scissors here\n";
+            rpsStatus = player.playRockPaperScissors();
+            if(rpsStatus == true){
+                cout << "Congrats on winning, you dodged those bandits, king\n";
+            }
+            else{
+                cout << "Because you lost against them in rps, they just kicked you harder\n";
+            }
         }
         else if(bandits == 'n' || bandits == 'N'){
             cout << "take the L\n";
@@ -353,7 +223,12 @@ void Calamities(){
             
         }
         if(labyrinth == 'y' || labyrinth == 'Y'){
-                cout << "play rock paper scissors here\n";
+                rpsStatus = player.playRockPaperScissors();
+                if(rpsStatus == true){
+                    cout << "you made it out the labyrinth\n";
+                } else{
+                    cout << "you got lost and basically died\n";
+                }
             }
             else if(labyrinth == 'n' || labyrinth == 'N'){
                 cout << "take the L\n";
@@ -369,7 +244,13 @@ void Calamities(){
             
         }
         if(avalanche == 'y' || avalanche == 'Y'){
-                cout << "play rock paper scissors here\n";
+                rpsStatus = player.playRockPaperScissors();
+                if(rpsStatus == true){
+                    cout << "you surfed the avalanche down the hill\n";
+                }
+                else{
+                    cout << "you got buried for a bit\n";
+                }
             }
             else if(avalanche == 'n' || avalanche == 'N'){
                 cout << "take the L\n";
@@ -425,15 +306,33 @@ int main(){
     vector<Character> allCharacters;
     allCandies = readCandy(candyFileName, allCandies);
     allCharacters = readCharacter(characterFileName, allCharacters);
-    //////Drawing cards test/////////// it works
+
+    bool rpsStatus;
+
+    int test;
+    cout << "1 for draw card, 2 for calamity, 3 for rps\n";
+    cin >> test;
+    if(test == 1){
+        //////Drawing cards test/////////// it works
     int cardResult = player1.drawCard();
     int playerPos = game_board.getPlayer1Position();
     int moveAmount = determineMoveAmount(playerPos, cardResult);
     game_board.movePlayer1(moveAmount);
     // game_board.displayBoard();
     cout << game_board.getPlayer1Position();
-    
-    // Calamities();
+    }
+    else if(test == 2){
+        Calamities(player1);
+    }
+    else if(test == 3){
+        rpsStatus = player1.playRockPaperScissors();
+        if(rpsStatus == true){
+            cout << "you won good job king\n";
+        }
+        else{
+            cout << "you lost loser\n";
+        }
+    }
     //start by opening every file needed and declaring all necessary variables
     //loading candy and character files
     //readCandy() and readCharacters()

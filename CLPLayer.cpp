@@ -1,5 +1,7 @@
 #include <iostream>
+#include <string>
 #include "CLPlayer.h"
+using namespace std;
 
 Player::Player(){
     _stamina = 0;
@@ -165,4 +167,41 @@ int Player::drawCard(){
         return 6;
     } 
     return 0;
+}
+
+bool Player::playRockPaperScissors(){
+    char p1c;
+    int  randomChoice= rand() % 3 + 1;
+    char computerChoice;
+    if( randomChoice == 1){
+        computerChoice = 'r';
+    }
+    else if(randomChoice == 2){
+        computerChoice = 'p';
+    }
+    else if(randomChoice == 3){
+        computerChoice = 's';
+    }
+    cout << "Enter r, p, or s\n";
+    cin >> p1c;
+    while(p1c != 'r' && p1c != 'p' && p1c != 's'){
+        cout << "Invalid selection!\n";
+        cin >> p1c;
+    }
+   
+    while(p1c == computerChoice){
+        cout << "Tie! Play again\n";
+        randomChoice= rand() % 3 + 1;
+        cout << "Player 1: Enter r, p, or s\n";
+        cin >> p1c;
+    }
+    if((p1c == 'r' && computerChoice == 's') || (p1c == 'p' && computerChoice == 'r') || (p1c == 's' && computerChoice == 'p')){
+        return true;
+    }
+    else if((computerChoice == 'r' && p1c == 's') || (computerChoice == 'p' && p1c == 'r') || (computerChoice == 's' && p1c == 'p')){
+        return false;
+    }
+
+    return false;
+
 }
