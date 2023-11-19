@@ -2,42 +2,79 @@
 #include <cstdlib>
 #include <ctime>
 #include "Board.h"
+#include "Store.h"
+#include "CLPlayer.h"
 
 using namespace std;
 
-int main(){
-    //generate random members
-    //how often a calamity occurs
-    //generate a random card draw and a deck of cards
-
-
-    //need to seed a random number generator
-    srand((unsigned) time(NULL)); //passes the current time in seconds since 01/01/1900
-    cout << rand() << endl; //no upper bound
-    for(int i = 0; i < 5; i++){
-        int x = rand() % 100 + 1;
-        // cout << x << "  ";
+ int determineMoveAmount(int playerPos, int cardResult){
+    int moveAmount = 0;
+    if((playerPos % 3 == 0 && cardResult == 2) || (playerPos % 3 == 1 && cardResult == 3) || (playerPos % 3 == 2 && cardResult == 1)){//pos two less than result
+        moveAmount = 1;
+    }
+    else if((playerPos % 3 == 0 && cardResult == 3) || (playerPos % 3 == 1 && cardResult == 1) || (playerPos % 3 == 2 && cardResult == 2)){//pos equals result
+        moveAmount = 2;
+    }
+    else if((playerPos % 3 == 0 && cardResult == 1) || (playerPos % 3 == 1 && cardResult == 2) || (playerPos % 3 == 2 && cardResult == 3)){//pos is one less than result
+        moveAmount = 3;
+    }
+    else if((playerPos % 3 == 0 && cardResult == 5) || (playerPos % 3 == 1 && cardResult == 6) || (playerPos % 3 == 2 && cardResult == 4)){//pos five less than result
+        moveAmount = 4;
+    }
+    else if((playerPos % 3 == 0 && cardResult == 6) || (playerPos % 3 == 1 && cardResult == 4) || (playerPos % 3 == 2 && cardResult == 5)){//pos five less than result
+        moveAmount = 5;
+    }
+    else if((playerPos % 3 == 0 && cardResult == 4) || (playerPos % 3 == 1 && cardResult == 5) || (playerPos % 3 == 2 && cardResult == 6)){//pos four less than result
+        moveAmount = 6;
     }
 
-    ///////////////calamities random work//////////////////////
-    int random = rand() % 100 + 1;
-    if(random >=1 && random <=12){
-        cout << "candy bandits\n";
-    }
-    else if(random >12 && random <= 26){
-        cout << "labyrinth\n";
-    }
-    else if(random >26 && random <= 32){
-        cout << "avalanche\n";
-    }
-    else if(random >32 && random <= 40){
-        cout << "candy trap\n";
-    }
-    else{
-        cout << "normal\n";
-    }
+    return moveAmount;
 }
 
+/*    just holding this here just in case
+if((playerPos % 3 == 0 && cardResult == 2) || (playerPos % 3 == 1 && cardResult == 3) || (playerPos % 3 == 2 && cardResult == 1)){//pos two less than result
+        game_board.movePlayer1(1);
+    }
+    else if((playerPos % 3 == 0 && cardResult == 3) || (playerPos % 3 == 1 && cardResult == 1) || (playerPos % 3 == 2 && cardResult == 2)){//pos equals result
+        game_board.movePlayer1(2);
+    }
+    else if((playerPos % 3 == 0 && cardResult == 1) || (playerPos % 3 == 1 && cardResult == 2) || (playerPos % 3 == 2 && cardResult == 3)){//pos is one less than result
+        game_board.movePlayer1(3);
+    }
+    else if((playerPos % 3 == 0 && cardResult == 5) || (playerPos % 3 == 1 && cardResult == 6) || (playerPos % 3 == 2 && cardResult == 4)){//pos five less than result
+        game_board.movePlayer1(4);
+    }
+    else if((playerPos % 3 == 0 && cardResult == 6) || (playerPos % 3 == 1 && cardResult == 4) || (playerPos % 3 == 2 && cardResult == 5)){//pos five less than result
+        game_board.movePlayer1(5);
+    }
+    else if((playerPos % 3 == 0 && cardResult == 4) || (playerPos % 3 == 1 && cardResult == 5) || (playerPos % 3 == 2 && cardResult == 6)){//pos four less than result
+        game_board.movePlayer1(6);
+    }*/
+int main(){
+    srand((unsigned) time(NULL));
+    Board game_board;
+    Player player1;
+    Player player2;
+    string candyFileName = "candy.txt";
+    string characterFileName = "characters.txt";
+    vector<Candy> allCandies;
+    // game_board.movePlayer1(1);
+    game_board.movePlayer2(50);
+
+    //////Drawing cards test///////////
+    int cardResult = -1;
+    
+    //if tree for moving correctly, gonna be massive, maybe make a function in main for it
+    //if position % 3 = 0 its magenta, if 1 its green, if 2 its blue
+
+    cardResult = player1.drawCard();
+    int playerPos = game_board.getPlayer1Position();
+    //how to make this a function
+    int moveAmount = determineMoveAmount(playerPos, cardResult);
+    game_board.movePlayer1(moveAmount);
+    game_board.displayBoard();
+    cout << game_board.getPlayer1Position();
+}
 
 
 /*just throwing this here in case its needed

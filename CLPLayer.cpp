@@ -132,10 +132,10 @@ bool Player::removeCandy(string name){
             _inventory[j] = _inventory[j + 1];
         }   
 
-        _inventory[3].name = "Empty";
-        _inventory[3].description = "";
-        _inventory[3].price = 0;
-        _inventory[3].candy_type = ""; 
+        _inventory[8].name = "Empty";
+        _inventory[8].description = "";
+        _inventory[8].price = 0;
+        _inventory[8].candy_type = ""; 
         setCandyAmount(getCandyAmount() - 1);
         return true;
     }
@@ -143,3 +143,26 @@ bool Player::removeCandy(string name){
     return false;
 }
 
+int Player::drawCard(){
+    double random = rand() % 100 + 1;
+    if(random > 0 && random <= 30){
+        cout << "You drew a Marshmallow Magenta card. Your game piece advances to Magenta tile. Here's the updated trail\n";
+        return 1;
+    } else if(random > 30  && random <= 60){
+        cout << "You drew a Minty Green card. Your game piece advances to Green tile. Here's the updated trail\n";
+        return 2;
+    } else if(random > 60  && random <= 90){
+        cout << "You drew a Bubblegum Blue card. Your game piece advances to Blue tile. Here's the updated trail\n";
+        return 3;
+    } else if(random > 90  && random <= 93){
+        cout << "You drew a Double Marshmallow Magenta card. Your game piece advances two Magenta tiles. Here's the updated trail\n";
+        return 4;
+    } else if(random > 93  && random <= 96){
+        cout << "You drew a Double Minty Green card. Your game piece advances two Green tiles. Here's the updated trail\n";
+        return 5;
+    } else if(random > 96  && random <= 100){
+        cout << "You drew a Double Bubblegum Blue card. Your game piece advances two Blue tiles. Here's the updated trail\n";
+        return 6;
+    } 
+    return 0;
+}

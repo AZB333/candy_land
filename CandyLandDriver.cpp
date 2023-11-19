@@ -390,6 +390,29 @@ void Calamities(){
     }
 }
 
+ int determineMoveAmount(int playerPos, int cardResult){
+    int moveAmount = 0;
+    if((playerPos % 3 == 0 && cardResult == 2) || (playerPos % 3 == 1 && cardResult == 3) || (playerPos % 3 == 2 && cardResult == 1)){//pos two less than result
+        moveAmount = 1;
+    }
+    else if((playerPos % 3 == 0 && cardResult == 3) || (playerPos % 3 == 1 && cardResult == 1) || (playerPos % 3 == 2 && cardResult == 2)){//pos equals result
+        moveAmount = 2;
+    }
+    else if((playerPos % 3 == 0 && cardResult == 1) || (playerPos % 3 == 1 && cardResult == 2) || (playerPos % 3 == 2 && cardResult == 3)){//pos is one less than result
+        moveAmount = 3;
+    }
+    else if((playerPos % 3 == 0 && cardResult == 5) || (playerPos % 3 == 1 && cardResult == 6) || (playerPos % 3 == 2 && cardResult == 4)){//pos five less than result
+        moveAmount = 4;
+    }
+    else if((playerPos % 3 == 0 && cardResult == 6) || (playerPos % 3 == 1 && cardResult == 4) || (playerPos % 3 == 2 && cardResult == 5)){//pos five less than result
+        moveAmount = 5;
+    }
+    else if((playerPos % 3 == 0 && cardResult == 4) || (playerPos % 3 == 1 && cardResult == 5) || (playerPos % 3 == 2 && cardResult == 6)){//pos four less than result
+        moveAmount = 6;
+    }
+    return moveAmount;
+}
+
 
 int main(){
     srand((unsigned) time(NULL));
@@ -402,9 +425,15 @@ int main(){
     vector<Character> allCharacters;
     allCandies = readCandy(candyFileName, allCandies);
     allCharacters = readCharacter(characterFileName, allCharacters);
-    game_board.movePlayer1(1);
+    //////Drawing cards test/////////// it works
+    int cardResult = player1.drawCard();
+    int playerPos = game_board.getPlayer1Position();
+    int moveAmount = determineMoveAmount(playerPos, cardResult);
+    game_board.movePlayer1(moveAmount);
     // game_board.displayBoard();
-    Calamities();
+    cout << game_board.getPlayer1Position();
+    
+    // Calamities();
     //start by opening every file needed and declaring all necessary variables
     //loading candy and character files
     //readCandy() and readCharacters()

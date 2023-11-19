@@ -32,6 +32,9 @@ class Player{
         bool addCandy(Candy); 
         bool removeCandy(string);
 
+        int drawCard();
+        //should make the draw card function in the player
+
 
 };
 
