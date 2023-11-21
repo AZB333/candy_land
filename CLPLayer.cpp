@@ -90,7 +90,7 @@ Candy Player::findCandy(string candy_name){
     }
     for(int i = 0; i < 9; i++){
         lowerInventoryName = _inventory[i].name;
-        for(int j = 0; j < _inventory[i].name.length(); j++){//stops right here
+        for(int j = 0; j < _inventory[i].name.length(); j++){
             lowerInventoryName[j] = tolower(_inventory[i].name[j]);//make inventory lower
         }
         if(lowerInventoryName == lowerCandyName){//since it makes everything lowercase in the test file, gotta make the _inventory[i].name lowercase

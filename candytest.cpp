@@ -74,6 +74,33 @@ int main(){
     game_board.movePlayer1(moveAmount);
     game_board.displayBoard();
     cout << game_board.getPlayer1Position();
+
+
+     /* adding candies to a players inventory, this adds something but not the right things
+     
+      cout << "Awesome! Here is a list of characters a player can select from\n";
+    displayCharacters(allCharacters);
+    cout << "The selected character is\n";
+    cin >> player1Name;
+    bool characterFound = false;
+    Candy candyToFind;
+    for(int i = 0; i < allCharacters.size(); i++){
+        if(player1Name == allCharacters[i].name){
+            cout << "chosen character is found\n";
+            for(int j = 0; j < allCharacters[i].candies.size(); j++){
+                for(int k = 0; k < allCandies.size(); k++){//i need to find the candy in the candy file
+                    if(allCharacters[i].candies[j] == allCandies[k].name){
+                        candyToFind = allCandies[k];
+                        cout << player1.addCandy(allCandies[j]);//almost works
+                    }
+                }
+            }
+        }
+        characterFound == true;
+    }
+    cout << "Player 1 inventory is now \n";
+    player1.printInventory();
+*/
 }
 
 
@@ -271,3 +298,15 @@ void playRockPaperScissors(Player players[]){ //change to one player
 
 }
 */
+
+/*character loading
+
+for(int i = 0; i < allCharacters.size(); i++){ //this is the problem
+        cout << allCharacters[i].name << " " << endl;
+        cout <<allCharacters[i].stamina << " " << endl;
+        cout <<allCharacters[i].gold << " " << endl;
+        for(int j = 0; j < allCharacters[i].candies.size(); j++){
+            cout << allCharacters[i].candies[j] << endl;
+        }
+        cout << "------------------------------------------\n";
+    }*/

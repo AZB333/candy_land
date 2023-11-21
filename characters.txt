@@ -1,5 +1,5 @@
 character name|stamina|gold|candies
-Toffee_Todd|200|20|Frosty Fizz,Toxic Taffy,Bubblegum Blast,Caramel Comet,Lucky Licorice
-Chocolate_Charlie|50|100|Toxic Taffy,Forsty Fizz,Lucky Licorice,Caramel Comet,Fearsome Fudge
-Sour_Saul|100|60|Bubblegum Blast,Lucky Licorice,Caramel Comet,Toxic Taffy,Breezy Butterscotch
-Honey_Harold|150|40|Breezy Butterscotch,Crimson Crystal,Fearsome Fudge,Lucky Licorice, Frosty Fizz
+Toffee_Todd|200|20|Frosty Fizz,Toxic Taffy,Bubblegum Blast,Breezy Butterscotch,Fearsome Fudge,Sparkling Sapphire,Caramel Comet,Lucky Licorice,Venomous Vortex
+Chocolate_Charlie|50|100|Toxic Taffy,Mystic Marshmallow,Ruby Rapture,Frosty Fizz,Bubblegum Blast,Lucky Licorice,Caramel Comet,Fearsome Fudge,Sparkling Sapphire
+Sour_Saul|100|60|Bubblegum Blast,Sparkling Sapphire,Lucky Licorice,Caramel Comet,Mystic Marshmallow,Ruby Rapture,Toxic Taffy,Venomous Vortex,Breezy Butterscotch
+Honey_Harold|150|40|Breezy Butterscotch,Venomous Vortex,Crimson Crystal,Ruby Rapture,Fearsome Fudge,Lucky Licorice,Frosty Fizz,Sparkling Sapphire,Mystic Marshmallow

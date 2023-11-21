@@ -15,6 +15,21 @@ struct Character{
     int stamina;
     int gold;
     vector<string> candies;
+    /*void displayCharacter(vector<Character> characters){
+        for(int i = 0; i < characters.size(); i++){
+            cout << "Name: " << characters[i].name << endl;
+            cout << "Stamina: " << characters[i].stamina << endl;
+            cout << "Gold: " << characters[i].gold << endl;
+            cout << "Candies:\n";
+            for(int j = 0; j < characters[i].candies[j].size(); i++){
+                cout << "[" << characters[i].candies[j] << "]";
+                if(j == 2 || j == 5){
+                    cout << endl;
+                }
+            }
+
+        }
+    }*/
 };
 
 /*
@@ -134,11 +149,11 @@ vector<Character> readCharacter(string fileName, vector<Character> characters){
         int actualStamina = 0;
         string gold = "";
         int actualGold = 0;
-        vector<string> candyNames;
-        string line;
         string candyLine;
+        string line;
         getline(characterFile, line);
         while(getline(characterFile, line)){
+            vector<string> candyNames;
             stringstream ss(line);
             int iterator = 0;
             Character current_character;
@@ -156,7 +171,6 @@ vector<Character> readCharacter(string fileName, vector<Character> characters){
                     gold = line;
                     actualGold = stoi(gold);
                 } else if(iterator == 3){
-                    iterator++;
                     stringstream candySS(line);
                     while(getline(candySS, line, ',')){
                         candyNames.push_back(line);
@@ -294,6 +308,23 @@ void Calamities(Player player){
     return moveAmount;
 }
 
+void displayCharacters(vector<Character> characters){
+        for(int i = 0; i < characters.size(); i++){ //this is the problem
+        cout << characters[i].name << " " << endl;
+        cout <<characters[i].stamina << " " << endl;
+        cout <<characters[i].gold << " " << endl;
+        for(int j = 0; j < characters[i].candies.size(); j++){
+            cout << "[" << characters[i].candies[j] << "]   ";
+            if(j > 0 && j % 3 == 2){
+                cout << endl;
+            }
+        }
+        
+        cout << "------------------------------------------\n";
+    }
+}
+
+
 
 int main(){
     srand((unsigned) time(NULL));
@@ -309,7 +340,7 @@ int main(){
 
     bool rpsStatus;
 
-    int test;
+    /*int test;
     cout << "1 for draw card, 2 for calamity, 3 for rps\n";
     cin >> test;
     if(test == 1){
@@ -333,37 +364,59 @@ int main(){
             cout << "you lost loser\n";
         }
     }
+    testing end*/
+
+
+
+
     //start by opening every file needed and declaring all necessary variables
     //loading candy and character files
     //readCandy() and readCharacters()
-    /*
-    actual main:
+    
+    //actual main:
     bool endOfGame = false;
     int numParticipants;
-    string player1name;
-    string player2name;
+    string player1Name;
+    string player2Name;
     char candyStore1Visit;
     cout << "Welcome to the game of Candyland. Please enter the number of participants\n";
-    cin >> numParticipants;
-    while(numParticipants != 2){
-        cin.clear();
-        cout << "Please choose 2 participants\n";
-        cin >> numParticipants;
-    }
+    // cin >> numParticipants;
+    // while(numParticipants != 2){
+    //     cin.clear();
+    //     cout << "Please choose 2 participants\n";
+    //     // cin >> numParticipants;
+    // }
     
     cout << "Enter player name:\n";
-    cin >> player1Name;
+    // cin >> player1Name;
     cout << "Awesome! Here is a list of characters a player can select from\n";
-    for(int i = 0; i < 4; i++){
-        player[i].displayInventory();
+    displayCharacters(allCharacters);
+    cout << "The selected character is\n";
+    cin >> player1Name;
+    bool characterFound = false;
+    Candy candyToFind;
+    for(int i = 0; i < allCharacters.size(); i++){
+        if(player1Name == allCharacters[i].name){
+            for(int j = 0; j < allCharacters[i].candies.size(); j++){//for some reason k is needed
+                for(int k = 0; k < allCandies.size(); k++){//i need to find the candy in the candy file
+                    if(allCharacters[i].candies[j] == allCandies[k].name){
+                        candyToFind = allCandies[k];
+                        player1.addCandy(allCandies[k]);// almost works, missing last index
+                    }
+                }
+            }
+        }
+        characterFound == true;
     }
-    cout << endl << "The selected character is\n";
-    cin >> player1name;
-    while(player1name != FOUND IN CHARACTER FILE){
+    cout << "Player 1 inventory is now \n";
+    player1.printInventory();
+
+    /*while(characterFound == false){
         cin.clear();
         cout << "Not a valid character, try again\n";
         cin >> player1name;
     }
+    /*
     cout << "Do you want to visit the candy store?\n";
     cin >> candyStore1Visit;
     while((candyStore1Visit != 'y' || candyStore1Visit != 'Y') && (candyStore1Visit != 'n' || candyStore1Visit != 'N')){
@@ -406,7 +459,7 @@ int main(){
         use boarddriver stuff, add three candies to the players inventory
         display store
         set candies appropriately
-        -------------------------------
+        -------------------------------ne
 
         if(player is at tile 83){
             endOfGame = true;
