@@ -75,7 +75,7 @@ void Player::printInventory(){
     }
 
     for(int i = 0; i < _MAX_CANDY_AMOUNT; i++){
-        cout << "[" << _inventory[i].name << "]";
+        cout << "[" << _inventory[i].name << "]  ";
         if(i == 2 || i == 5){
             cout << endl;
         }

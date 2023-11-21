@@ -379,45 +379,61 @@ int main(){
     string player1Name;
     string player2Name;
     char candyStore1Visit;
+    bool characterFound = false;
+
     cout << "Welcome to the game of Candyland. Please enter the number of participants\n";
-    // cin >> numParticipants;
-    // while(numParticipants != 2){
-    //     cin.clear();
-    //     cout << "Please choose 2 participants\n";
-    //     // cin >> numParticipants;
-    // }
+    cin >> numParticipants;
+    while(numParticipants != 2){//this works
+        cin.clear();
+        cin.ignore(1000,'\n');
+        cout << "Please choose 2 participants\n";
+        cin >> numParticipants;
+    }
     
     cout << "Enter player name:\n";
-    // cin >> player1Name;
+    cin >> player1Name;
     cout << "Awesome! Here is a list of characters a player can select from\n";
     displayCharacters(allCharacters);
     cout << "The selected character is\n";
     cin >> player1Name;
-    bool characterFound = false;
-    Candy candyToFind;
-    for(int i = 0; i < allCharacters.size(); i++){
+    
+    for(int i = 0; i < allCharacters.size(); i++){//gotta find the character, then the candies, then the candies in the candies file
         if(player1Name == allCharacters[i].name){
-            for(int j = 0; j < allCharacters[i].candies.size(); j++){//for some reason k is needed
-                for(int k = 0; k < allCandies.size(); k++){//i need to find the candy in the candy file
+            characterFound = true;
+            for(int j = 0; j < allCharacters[i].candies.size(); j++){//k is needed
+                for(int k = 0; k < allCandies.size(); k++){
                     if(allCharacters[i].candies[j] == allCandies[k].name){
-                        candyToFind = allCandies[k];
-                        player1.addCandy(allCandies[k]);// almost works, missing last index
+                        player1.addCandy(allCandies[k]);
                     }
                 }
             }
         }
-        characterFound == true;
+    }
+    while(characterFound == false){
+        cin.clear();
+        cin.ignore(1000,'\n');
+        cout << "Not a valid character, try again:\n";
+        cin >> player1Name;
+        for(int i = 0; i < allCharacters.size(); i++){//gotta find the character, then the candies, then the candies in the candies file
+            if(player1Name == allCharacters[i].name){
+                for(int j = 0; j < allCharacters[i].candies.size(); j++){//k is needed
+                    for(int k = 0; k < allCandies.size(); k++){
+                        if(allCharacters[i].candies[j] == allCandies[k].name){
+                            player1.addCandy(allCandies[k]);
+                        }
+                    }
+                }
+                characterFound = true;
+            }
+
+        }
     }
     cout << "Player 1 inventory is now \n";
     player1.printInventory();
 
-    /*while(characterFound == false){
-        cin.clear();
-        cout << "Not a valid character, try again\n";
-        cin >> player1name;
-    }
-    /*
-    cout << "Do you want to visit the candy store?\n";
+    
+    
+    /*cout << "Do you want to visit the candy store?\n";
     cin >> candyStore1Visit;
     while((candyStore1Visit != 'y' || candyStore1Visit != 'Y') && (candyStore1Visit != 'n' || candyStore1Visit != 'N')){
         cin.clear();
