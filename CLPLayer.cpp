@@ -100,9 +100,33 @@ Candy Player::findCandy(string candy_name){
     }
     return desiredCandy;
 }
-bool Player::addCandy(Candy c){
-    if(getCandyAmount() == 9){
-        return false;
+bool Player::addCandy(Candy c){ 
+    bool replaceCandy;
+    char replaceChoice;
+    int indexToRemove;
+    if(getCandyAmount() == 9){//need to change if inventory is full to swapping a desired index, might need to do this in main
+        cout << "Your inventory is full! Would you like to replace an existing candy with a new one?(y/n)\n";
+        cin >> replaceChoice;
+        while((replaceChoice != 'y' && replaceChoice != 'Y') && (replaceChoice != 'n' && replaceChoice != 'N')){
+            cin.clear();
+            cin.ignore(1000,'\n');
+            cout << "Invalid option, try again\n";
+            cin >> replaceChoice;
+        }
+        if(replaceChoice == 'y' || replaceChoice == 'Y'){
+            cout << "Please choose an index to replace a candy at (1-9)\n";
+            cin >> indexToRemove;
+            while(indexToRemove > 9 && indexToRemove < 1){
+                cin.clear();
+                cin.ignore(1000,'\n');
+                cout << "Invalid input, enter a number between 1 and 9\n";
+                cin >> indexToRemove;
+            }
+            cout << "gotta replace it now\n";
+        }
+        else{
+            return false;
+        }
     }
     else{
         _inventory[_candy_amount] = c;

@@ -388,7 +388,34 @@ int main(){
     string player1Name;
     string player2Name;
     char candyStore1Visit;
-    cout << "Welcome to the game of Candyland. Please enter the number of participants\n";
+    // cout << "Welcome to the game of Candyland. Please enter the number of participants\n";
+
+
+    int arr[4];
+    for(int i = 0; i < 4; i++){
+        int random = rand() % 5 + 1;
+
+        arr[i] = random;
+        cout << arr[i] << " ";
+
+        for(int j = 0; j < 4; j++){
+            if(i != j && arr[i] == arr[j]){
+                int newRandom = rand() % 5 + 1;
+                cout << "\nfound a copy at i: " << i << " j: " << j;
+                cout << " copy is " << arr[i] << " and " << arr[j] << endl;
+                arr[i] = newRandom;
+            }
+        }
+    }
+    
+    cout << endl;
+    for(int i = 0; i < 4; i++){
+        cout << arr[i] << " ";
+    }
+
+
+
+
     // cin >> numParticipants;
     // while(numParticipants != 2){
     //     cin.clear();
@@ -396,7 +423,7 @@ int main(){
     //     // cin >> numParticipants;
     // }
     
-    cout << "Enter player name:\n";
+    /*cout << "Enter player name:\n";
     // cin >> player1Name;
     cout << "Awesome! Here is a list of characters a player can select from\n";
     displayCharacters(allCharacters);
@@ -417,6 +444,7 @@ int main(){
         }
         characterFound == true;
     }
+    */
     // int characterIndex;
     // for(int i = 0; i < allCharacters.size(); i++){
     //     if(player1Name == allCharacters[i].name){
@@ -431,8 +459,8 @@ int main(){
     //         player1.addCandy(allCandies[j]);
     //     }
     // }
-    cout << "Player 1 inventory is now \n";
-    player1.printInventory();
+    // cout << "Player 1 inventory is now \n";
+    // player1.printInventory();
 
     /*while(characterFound == false){
         cin.clear();

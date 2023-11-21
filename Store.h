@@ -24,9 +24,9 @@ class Store{
     public:
         Store();
         void displayCandies();
-        vector<Candy> readCandies(string, vector<Candy>);
-        // void addCandy(Candy);
-        void populateStore(string);
+        // vector<Candy> readCandies(string, vector<Candy>);
+        void populateStore(string, vector<Candy>);
+        Candy getCandy(string);
 };
 
 

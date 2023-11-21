@@ -14,8 +14,8 @@ Store::Store(){
 }
 
 void Store::displayCandies(){
-    for(int i = 0; i < 3; i++){
-        
+    cout << "Welcome to the Candy Store! Please choose one of these delicious candies\n";
+    for(int i = 0; i < 4; i++){
         cout << "Name: "<< _store_inventory[i].name << endl;
         cout << "Description: " << _store_inventory[i].description << endl;
         cout << "Effect: " << _store_inventory[i].effect << endl;
@@ -25,9 +25,11 @@ void Store::displayCandies(){
         cout << "--------------------------------\n";
         
     }
+    cout << "The selected candy is \n";
+
 }
 
-vector<Candy> Store::readCandies(string file_name, vector<Candy> store_candies){ //add extra candy members
+/*vector<Candy> Store::readCandies(string file_name, vector<Candy> store_candies){ //add extra candy members
     ifstream candyFile;
     string line;
     candyFile.open(file_name);
@@ -83,16 +85,41 @@ vector<Candy> Store::readCandies(string file_name, vector<Candy> store_candies){
     return store_candies;
 }
 }
+*/
 
-
-void Store::populateStore(string fileName){
-    vector<Candy> allCandies;
+void Store::populateStore(string fileName, vector<Candy> allCandies){//as far as i know this works
     srand((unsigned) time(NULL));
-    int random = 0;
-    allCandies = readCandies(fileName, allCandies);
-    for(int j = 0; j < 4; j++){
+    int random;
+    int cantUse[4];
+    // allCandies = readCandies(fileName, allCandies);
+    for(int i = 0; i < 4; i++){//should populate the store four times
         random = rand() % allCandies.size();
-        _store_inventory[j] = allCandies[random];
+        cantUse[i] = random;
+        for(int j = 0; j < 4; j++){//checks if that value has already been used
+            if(i != j && cantUse[i] == cantUse[j]){
+                if(random < 11){
+                    _store_inventory[j] = allCandies[random + 2];
+                }else{
+                    _store_inventory[j] = allCandies[random - 2];
+                }
+            }
+            else{
+                _store_inventory[i] = allCandies[random];
+            }
+            
+        }
     }
 
+
+}
+
+Candy Store::getCandy(string candyName){
+    Candy empty;
+    empty.name = "";
+    empty.description = "";
+    empty.effect = "";
+    empty.effect_value = 0;
+    empty.price = 0; 
+    empty.candy_type = "";
+    return empty;
 }

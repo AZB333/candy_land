@@ -380,6 +380,8 @@ int main(){
     string player2Name;
     char candyStore1Visit;
     bool characterFound = false;
+    string startingStoreChoice;
+    bool startingCandyFound = false;
 
     cout << "Welcome to the game of Candyland. Please enter the number of participants\n";
     cin >> numParticipants;
@@ -431,19 +433,46 @@ int main(){
     cout << "Player 1 inventory is now \n";
     player1.printInventory();
 
+    // everything works up to here
     
     
-    /*cout << "Do you want to visit the candy store?\n";
+    cout << "\nDo you want to visit the candy store?\n";
     cin >> candyStore1Visit;
-    while((candyStore1Visit != 'y' || candyStore1Visit != 'Y') && (candyStore1Visit != 'n' || candyStore1Visit != 'N')){
+    while((candyStore1Visit != 'y' && candyStore1Visit != 'Y') && (candyStore1Visit != 'n' && candyStore1Visit != 'N')){
         cin.clear();
+        cin.ignore(1000,'\n');
         cout << "Invalid option, try again\n";
         cin >> candyStore1Visit;
     }
     if(candyStore1Visit == 'y' || candyStore1Visit == 'Y'){
-        display candy store
+        cin.ignore(1000,'\n');
+        Store startingStore;
+        startingStore.populateStore(candyFileName, allCandies);
+        startingStore.displayCandies();
+        getline(cin, startingStoreChoice);
+        // for(int i = 0; i < 4; i++){
+        //     if(startingStoreChoice == startingStore.getInventory[i]){
+        //         player1.addCandy(startingStore.getInventory[i]);
+        //         startingCandyFound = true;
+        //     }
+        // }
+        // while(startingCandyFound == false){
+        //     cin.clear();
+        //     cin.ignore(1000,'\n');
+        //     cout << "Invalid input. Please try again\n";
+        //     getline(cin, startingStoreChoice);
+        //     for(int i = 0; i < 4; i++){
+        //         if(startingStoreChoice == startingStore.getInventory[i]){
+        //             player1.addCandy(startingStore.getInventory[i]);
+        //             startingCandyFound = true;
+        //         }
+        //     } 
+        // }
     }
 
+
+    //////////////////////////////////Player 2 land///////////////////////////////////
+    /*
     --------------------------------------
     ***do the same thing for player two***
     --------------------------------------
