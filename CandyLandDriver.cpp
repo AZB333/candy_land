@@ -337,52 +337,29 @@ int main(){
     vector<Character> allCharacters;
     allCandies = readCandy(candyFileName, allCandies);
     allCharacters = readCharacter(characterFileName, allCharacters);
-
     bool rpsStatus;
 
-    /*int test;
-    cout << "1 for draw card, 2 for calamity, 3 for rps\n";
-    cin >> test;
-    if(test == 1){
-        //////Drawing cards test/////////// it works
-    int cardResult = player1.drawCard();
-    int playerPos = game_board.getPlayer1Position();
-    int moveAmount = determineMoveAmount(playerPos, cardResult);
-    game_board.movePlayer1(moveAmount);
-    // game_board.displayBoard();
-    cout << game_board.getPlayer1Position();
-    }
-    else if(test == 2){
-        Calamities(player1);
-    }
-    else if(test == 3){
-        rpsStatus = player1.playRockPaperScissors();
-        if(rpsStatus == true){
-            cout << "you won good job king\n";
-        }
-        else{
-            cout << "you lost loser\n";
-        }
-    }
-    testing end*/
-
-
-
-
-    //start by opening every file needed and declaring all necessary variables
-    //loading candy and character files
-    //readCandy() and readCharacters()
-    
     //actual main:
     bool endOfGame = false;
     int numParticipants;
     string player1Name;
     string player2Name;
+    string character1Name;
+    string character2Name;
     char candyStore1Visit;
-    bool characterFound = false;
-    string startingStoreChoice;
-    bool startingCandyFound = false;
-    bool visitCandyStore = false;
+    char candyStore2Visit;
+    bool character1Found = false;
+    bool character2Found = false;
+
+    string startingStore1Choice;
+    string startingStore2Choice;
+
+    bool startingCandy1Found = false;
+    bool startingCandy2Found = false;
+
+    bool visitCandy1Store = false;
+    bool visitCandy2Store = false;
+
 
 
     cout << "Welcome to the game of Candyland. Please enter the number of participants\n";
@@ -399,11 +376,11 @@ int main(){
     cout << "Awesome! Here is a list of characters a player can select from\n";
     displayCharacters(allCharacters);
     cout << "The selected character is\n";
-    cin >> player1Name;
+    cin >> character1Name;
     
     for(int i = 0; i < allCharacters.size(); i++){//gotta find the character, then the candies, then the candies in the candies file
-        if(player1Name == allCharacters[i].name){
-            characterFound = true;
+        if(character1Name == allCharacters[i].name){
+            character1Found = true;
             for(int j = 0; j < allCharacters[i].candies.size(); j++){//k is needed
                 for(int k = 0; k < allCandies.size(); k++){
                     if(allCharacters[i].candies[j] == allCandies[k].name){
@@ -413,13 +390,13 @@ int main(){
             }
         }
     }
-    while(characterFound == false){
+    while(character1Found == false){
         cin.clear();
         cin.ignore(1000,'\n');
         cout << "Not a valid character, try again:\n";
-        cin >> player1Name;
+        cin >> character1Name;
         for(int i = 0; i < allCharacters.size(); i++){//gotta find the character, then the candies, then the candies in the candies file
-            if(player1Name == allCharacters[i].name){
+            if(character1Name == allCharacters[i].name){
                 for(int j = 0; j < allCharacters[i].candies.size(); j++){//k is needed
                     for(int k = 0; k < allCandies.size(); k++){
                         if(allCharacters[i].candies[j] == allCandies[k].name){
@@ -427,7 +404,7 @@ int main(){
                         }
                     }
                 }
-                characterFound = true;
+                character1Found = true;
             }
 
         }
@@ -448,24 +425,24 @@ int main(){
     }
     if(candyStore1Visit == 'y' || candyStore1Visit == 'Y'){
         cin.ignore(1000,'\n');
-        Store startingStore;
-        startingStore.populateStore(candyFileName, allCandies);
-        startingStore.displayCandies();
-        getline(cin, startingStoreChoice);
-        if(startingStoreChoice == startingStore.findCandy(startingStoreChoice).name){
-            startingCandyFound = true;
-            visitCandyStore = player1.addCandy(startingStore.findCandy(startingStoreChoice));
+        Store startingStore1;
+        startingStore1.populateStore(candyFileName, allCandies);
+        startingStore1.displayCandies();
+        getline(cin, startingStore1Choice);
+        if(startingStore1Choice == startingStore1.findCandy(startingStore1Choice).name){
+            startingCandy1Found = true;
+            visitCandy1Store = player1.addCandy(startingStore1.findCandy(startingStore1Choice));
             
         }
-        while(startingCandyFound == false){
+        while(startingCandy1Found == false){
             cin.clear();
             cin.ignore(1000,'\n');
             cout << "Invalid input. Please try again\n";
-            getline(cin, startingStoreChoice);
+            getline(cin, startingStore1Choice);
             for(int i = 0; i < 4; i++){
-                if(startingStoreChoice == startingStore.findCandy(startingStoreChoice).name){
-                    player1.addCandy(startingStore.findCandy(startingStoreChoice));
-                    startingCandyFound = true;
+                if(startingStore1Choice == startingStore1.findCandy(startingStore1Choice).name){
+                    player1.addCandy(startingStore1.findCandy(startingStore1Choice));
+                    startingCandy1Found = true;
                 }
             } 
         }
@@ -473,10 +450,115 @@ int main(){
     player1.printInventory();
 
     //////////////////////////////////Player 2 land///////////////////////////////////
+    //////////////////////////////////Player 2 land///////////////////////////////////
+    //////////////////////////////////Player 2 land///////////////////////////////////
+    //////////////////////////////////Player 2 land///////////////////////////////////
+    //////////////////////////////////Player 2 land///////////////////////////////////
+    //////////////////////////////////Player 2 land///////////////////////////////////
+    //////////////////////////////////Player 2 land///////////////////////////////////
+    //////////////////////////////////Player 2 land///////////////////////////////////
+
+
+
+    cout << "\nEnter player name:\n";
+    cin >> player2Name;
+    cout << "Awesome! Here is a list of characters a player can select from\n";
+    displayCharacters(allCharacters);
+    cout << "The selected character is\n";
+    cin >> character2Name;
+    while(character1Name == character2Name){
+        cout << "Cannot be the same character as " << player1Name << ". Please choose a different character\n";
+        cin >> character2Name;
+    }
+    
+    for(int i = 0; i < allCharacters.size(); i++){//gotta find the character, then the candies, then the candies in the candies file
+        if(character2Name == allCharacters[i].name){
+            character2Found = true;
+            for(int j = 0; j < allCharacters[i].candies.size(); j++){//k is needed
+                for(int k = 0; k < allCandies.size(); k++){
+                    if(allCharacters[i].candies[j] == allCandies[k].name){
+                        player2.addCandy(allCandies[k]);
+                    }
+                }
+            }
+        }
+    }
+    while(character2Found == false){
+        cin.clear();
+        cin.ignore(1000,'\n');
+        cout << "Not a valid character, try again:\n";
+        cin >> character2Name;
+        for(int i = 0; i < allCharacters.size(); i++){//gotta find the character, then the candies, then the candies in the candies file
+            if(character2Name == allCharacters[i].name){
+                for(int j = 0; j < allCharacters[i].candies.size(); j++){//k is needed
+                    for(int k = 0; k < allCandies.size(); k++){
+                        if(allCharacters[i].candies[j] == allCandies[k].name){
+                            player2.addCandy(allCandies[k]);
+                        }
+                    }
+                }
+                character2Found = true;
+            }
+
+        }
+    }
+    cout << "Player 2 inventory is now \n";
+    player2.printInventory();
+
+    // everything works up to here
+    
+    //player2
+    
+    cout << "\nDo you want to visit the candy store?\n";
+    cin >> candyStore2Visit;
+    while((candyStore2Visit != 'y' && candyStore2Visit != 'Y') && (candyStore2Visit != 'n' && candyStore2Visit != 'N')){
+        cin.clear();
+        cin.ignore(1000,'\n');
+        cout << "Invalid option, try again\n";
+        cin >> candyStore2Visit;
+    }
+    if(candyStore2Visit == 'y' || candyStore2Visit == 'Y'){
+        cin.ignore(1000,'\n');
+        Store startingStore2;
+        startingStore2.populateStore(candyFileName, allCandies);
+        startingStore2.displayCandies();
+        getline(cin, startingStore2Choice);
+        if(startingStore2Choice == startingStore2.findCandy(startingStore2Choice).name){
+            startingCandy2Found = true;
+            visitCandy2Store = player2.addCandy(startingStore2.findCandy(startingStore2Choice));
+            
+        }
+        while(startingCandy2Found == false){
+            cin.clear();
+            cin.ignore(1000,'\n');
+            cout << "Invalid input. Please try again\n";
+            getline(cin, startingStore2Choice);
+            for(int i = 0; i < 4; i++){
+                if(startingStore2Choice == startingStore2.findCandy(startingStore2Choice).name){
+                    player2.addCandy(startingStore2.findCandy(startingStore2Choice));
+                    startingCandy2Found = true;
+                }
+            } 
+        }
+    }
+    player2.printInventory();
+
+    while(game_board.getPlayer1Position() < 83 && game_board.getPlayer2Position() < 83)
+
+    while(endOfGame == false){  
+
+
+
+
+
+
+
+
+
+
+    }
+
     /*
-    --------------------------------------
-    ***do the same thing for player two***
-    --------------------------------------
 
     once both players have chosen their characters, its time to start the game
 
