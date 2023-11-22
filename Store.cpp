@@ -113,13 +113,22 @@ void Store::populateStore(string fileName, vector<Candy> allCandies){//as far as
 
 }
 
-Candy Store::getCandy(string candyName){
-    Candy empty;
-    empty.name = "";
-    empty.description = "";
-    empty.effect = "";
-    empty.effect_value = 0;
-    empty.price = 0; 
-    empty.candy_type = "";
-    return empty;
+Candy Store::findCandy(string candyName){
+    Candy desiredCandy = {"","","",0,"",0};
+    string lowerCandyName = candyName;//lower parameter
+    string lowerInventoryName;//lower inventory
+    for(int i = 0; i < lowerCandyName.length(); i++){
+        lowerCandyName[i] = tolower(candyName[i]); //make lowerCandy lower
+    }
+    for(int i = 0; i < 9; i++){
+        lowerInventoryName = _store_inventory[i].name;
+        for(int j = 0; j < _store_inventory[i].name.length(); j++){
+            lowerInventoryName[j] = tolower(_store_inventory[i].name[j]);//make inventory lower
+        }
+        if(lowerInventoryName == lowerCandyName){//since it makes everything lowercase in the test file, gotta make the _inventory[i].name lowercase
+            desiredCandy = _store_inventory[i];
+            return desiredCandy;
+        }
+    }
+    return desiredCandy;
 }

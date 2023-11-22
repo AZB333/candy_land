@@ -122,7 +122,8 @@ bool Player::addCandy(Candy c){
                 cout << "Invalid input, enter a number between 1 and 9\n";
                 cin >> indexToRemove;
             }
-            cout << "gotta replace it now\n";
+            _inventory[indexToRemove - 1] = c;
+            return true;
         }
         else{
             return false;

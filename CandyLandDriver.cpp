@@ -382,6 +382,8 @@ int main(){
     bool characterFound = false;
     string startingStoreChoice;
     bool startingCandyFound = false;
+    bool visitCandyStore = false;
+
 
     cout << "Welcome to the game of Candyland. Please enter the number of participants\n";
     cin >> numParticipants;
@@ -450,26 +452,25 @@ int main(){
         startingStore.populateStore(candyFileName, allCandies);
         startingStore.displayCandies();
         getline(cin, startingStoreChoice);
-        // for(int i = 0; i < 4; i++){
-        //     if(startingStoreChoice == startingStore.getInventory[i]){
-        //         player1.addCandy(startingStore.getInventory[i]);
-        //         startingCandyFound = true;
-        //     }
-        // }
-        // while(startingCandyFound == false){
-        //     cin.clear();
-        //     cin.ignore(1000,'\n');
-        //     cout << "Invalid input. Please try again\n";
-        //     getline(cin, startingStoreChoice);
-        //     for(int i = 0; i < 4; i++){
-        //         if(startingStoreChoice == startingStore.getInventory[i]){
-        //             player1.addCandy(startingStore.getInventory[i]);
-        //             startingCandyFound = true;
-        //         }
-        //     } 
-        // }
+        if(startingStoreChoice == startingStore.findCandy(startingStoreChoice).name){
+            startingCandyFound = true;
+            visitCandyStore = player1.addCandy(startingStore.findCandy(startingStoreChoice));
+            
+        }
+        while(startingCandyFound == false){
+            cin.clear();
+            cin.ignore(1000,'\n');
+            cout << "Invalid input. Please try again\n";
+            getline(cin, startingStoreChoice);
+            for(int i = 0; i < 4; i++){
+                if(startingStoreChoice == startingStore.findCandy(startingStoreChoice).name){
+                    player1.addCandy(startingStore.findCandy(startingStoreChoice));
+                    startingCandyFound = true;
+                }
+            } 
+        }
     }
-
+    player1.printInventory();
 
     //////////////////////////////////Player 2 land///////////////////////////////////
     /*

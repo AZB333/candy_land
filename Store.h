@@ -26,7 +26,7 @@ class Store{
         void displayCandies();
         // vector<Candy> readCandies(string, vector<Candy>);
         void populateStore(string, vector<Candy>);
-        Candy getCandy(string);
+        Candy findCandy(string);
 };
 
 
