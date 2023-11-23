@@ -587,12 +587,19 @@ int main(){
             cout << "Invalid choice, try again\n";
             cin >> menuChoice;
         }
+        // if(menuChoice == 1){
+        //     int drawResult = player1.drawCard();
+        //     movePlayer1 = determineMoveAmount(game_board.getPlayer1Position(), drawResult);
+        //     game_board.movePlayer1(movePlayer1);
+        //     game_board.displayBoard();
+
+        // }
         if(menuChoice == 1){
-            // player1.drawCard();
-            movePlayer1 = determineMoveAmount(game_board.getPlayer1Position(), player1.drawCard());
-            game_board.movePlayer1(movePlayer1);
-            // game_board.displayBoard();
-            cout << game_board.getPlayer1Position() << " ";
+        int drawResult = player2.drawCard();
+        movePlayer2 = determineMoveAmount(game_board.getPlayer2Position(), drawResult);
+        game_board.movePlayer2(movePlayer2);
+        game_board.displayBoard();
+
         }
         else if(menuChoice == 2){
 
@@ -606,12 +613,8 @@ int main(){
         //////////then do player 2//////////
         //////////then do player 2//////////
 
-
-
-
-
-        if(game_board.getPlayer1Position() >= 83){
-            cout << "\n\n\n\n\nmade it to the end\n\n\n";
+        // cout << game_board.getPlayer1Position() << " " << game_board.getPlayer2Position() << endl;
+        if(game_board.getPlayer1Position() >= 83 || game_board.getPlayer2Position() >= 83){
             endOfGame = true;
         }
 

@@ -160,7 +160,7 @@ bool Board::isPositionCandyStore(int board_position)
 bool Board::movePlayer1(int tile_to_move_forward)
 {
     int new_player_position = tile_to_move_forward + _player1_position;
-    if(new_player_position < 0 || new_player_position >= _BOARD_SIZE)
+    if(new_player_position < 0)
     {
         return false;
     }
@@ -170,7 +170,7 @@ bool Board::movePlayer1(int tile_to_move_forward)
 bool Board::movePlayer2(int tile_to_move_forward)
 {
     int new_player_position = tile_to_move_forward + _player2_position;
-    if(new_player_position < 0 || new_player_position >= _BOARD_SIZE)
+    if(new_player_position < 0)
     {
         return false;
     }
