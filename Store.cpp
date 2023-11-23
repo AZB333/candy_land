@@ -99,7 +99,7 @@ void Store::populateStore(string fileName, vector<Candy> allCandies){//as far as
             if(i != j && cantUse[i] == cantUse[j]){
                 if(random < 11){
                     _store_inventory[j] = allCandies[random + 2];
-                }else{
+                }else if(random > 2){
                     _store_inventory[j] = allCandies[random - 2];
                 }
             }
@@ -120,7 +120,7 @@ Candy Store::findCandy(string candyName){
     for(int i = 0; i < lowerCandyName.length(); i++){
         lowerCandyName[i] = tolower(candyName[i]); //make lowerCandy lower
     }
-    for(int i = 0; i < 9; i++){
+    for(int i = 0; i < 4; i++){
         lowerInventoryName = _store_inventory[i].name;
         for(int j = 0; j < _store_inventory[i].name.length(); j++){
             lowerInventoryName[j] = tolower(_store_inventory[i].name[j]);//make inventory lower
