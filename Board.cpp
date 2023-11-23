@@ -39,11 +39,11 @@ void Board::displayTile(int position)
     }
     Tile target = _tiles[position];
     cout << target.color << " ";
-    if (position == _player1_position)
+    if (position == _player1_position && position != 0)//doesnt show character at start, just like the github
     {
         cout << "1";
     }
-    else if(position == _player2_position){
+    else if(position == _player2_position && position != 0){
         cout << "2";
     }
     else

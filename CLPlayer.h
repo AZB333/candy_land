@@ -34,6 +34,7 @@ class Player{
 
         int drawCard();
         bool playRockPaperScissors();
+        void populatePlayer(string);
 
 };
 

@@ -196,7 +196,7 @@ vector<Character> readCharacter(string fileName, vector<Character> characters){
 
 
 
-void Calamities(Player player){
+bool Calamities(Player player){//need to do setters//NEED TO MAKE BOOL
     srand((unsigned) time(NULL));
     char bandits;
     char labyrinth;
@@ -205,7 +205,7 @@ void Calamities(Player player){
     bool rpsStatus;
     int random = rand() % 100 + 1;
     if(random >=1 && random <=12){
-        cout << "Candy Bandits! do you wanna play rock paper scissors to see if you actually lose or not?\n";
+        cout << "Candy Bandits! Do you want to play rock paper scissors to try to avoid them?\n";
         cin >> bandits;
         while((bandits != 'y' && bandits != 'Y') && (bandits != 'n' && bandits != 'N')){
         cin.clear();
@@ -216,19 +216,26 @@ void Calamities(Player player){
     if(bandits == 'y' || bandits == 'Y'){
             rpsStatus = player.playRockPaperScissors();
             if(rpsStatus == true){
-                cout << "Congrats on winning, you dodged those bandits, king\n";
+                cout << "You've won! The bandits leave you alone out of respect\n";
+                return true;
             }
             else{
-                cout << "Because you lost against them in rps, they just kicked you harder\n";
+                int coinLoss = rand() % 10 + 1;
+                cout << "The bandits beat you to a pulp, taking " << coinLoss << " coins\n";
+                player.setGold(player.getGold() - coinLoss);
+                return true;
             }
         }
         else if(bandits == 'n' || bandits == 'N'){
-            cout << "take the L\n";
+            int coinLoss = rand() % 10 + 1;
+            cout << "You surrender to the bandits, giving " << coinLoss << " coins in exchange for your life\n";
+            player.setGold(player.getGold() - coinLoss);
+            return true;
         }
     
     }
     else if(random >12 && random <= 26){
-            cout << "labyrinth! do you wanna play rock paper scissors to see if you actually lose or not?\n";
+            cout << "Oh dear! You got lost in the lollipop labyrinth! do you wanna play rock paper scissors to see if you actually lose or not?\n";
             cin >> labyrinth;
             while((labyrinth != 'y' && labyrinth != 'Y') && (labyrinth != 'n' && labyrinth != 'N')){
             cin.clear();
@@ -240,12 +247,15 @@ void Calamities(Player player){
                 rpsStatus = player.playRockPaperScissors();
                 if(rpsStatus == true){
                     cout << "you made it out the labyrinth\n";
+                    return true;
                 } else{
                     cout << "you got lost and basically died\n";
+                    return false;
                 }
             }
             else if(labyrinth == 'n' || labyrinth == 'N'){
                 cout << "take the L\n";
+                return false;
             }
     }
     else if(random >26 && random <= 32){
@@ -261,13 +271,18 @@ void Calamities(Player player){
                 rpsStatus = player.playRockPaperScissors();
                 if(rpsStatus == true){
                     cout << "you surfed the avalanche down the hill\n";
+                    return true;
                 }
                 else{
                     cout << "you got buried for a bit\n";
+                    //setter
+                    return false;
                 }
             }
             else if(avalanche == 'n' || avalanche == 'N'){
                 cout << "take the L\n";
+                //setter
+                return false;
             }
     }
     else if(random >32 && random <= 40){
@@ -275,13 +290,11 @@ void Calamities(Player player){
         //check for the candy with .find
         if(trap == false){
             cout << "tough luck loser\n";
+            return false;
         }
         else{
             cout << "hey nice job\n";
         }
-    }
-    else{
-        cout << "normal\n";
     }
 }
 
@@ -339,6 +352,9 @@ int main(){
     allCharacters = readCharacter(characterFileName, allCharacters);
     bool rpsStatus;
     bool endOfGame = false;
+    bool hasTurn1;
+    bool hasTurn2;
+
 
     int numParticipants;//player creation variables
     string player1Name;
@@ -385,8 +401,7 @@ int main(){
     /////////////////////////////////////////////////////////////////////
 
     cout << "Welcome to the game of Candyland. Please enter the number of participants\n";
-    // cin >> numParticipants;
-    numParticipants = 2;
+    cin >> numParticipants;
     while(numParticipants != 2){
         cin.clear();
         cin.ignore(1000,'\n');
@@ -395,13 +410,11 @@ int main(){
     }
     
     cout << "Enter Player 1 name:\n";
-    // cin >> player1Name;
-    player1Name = "Aleqz";
+    cin >> player1Name;
     cout << "Awesome! Here is a list of characters a player can select from\n";
     displayCharacters(allCharacters);
     cout << "The selected character is\n";
-    // cin >> character1Name;
-    character1Name = "Sour_Saul";
+    cin >> character1Name;
     
     for(int i = 0; i < allCharacters.size(); i++){//find the character, then the candies, then the candies in the candies file
         if(character1Name == allCharacters[i].name){
@@ -436,10 +449,10 @@ int main(){
     }
     cout << "Player 1 inventory is now \n";
     player1.printInventory();
+    player1.populatePlayer(character1Name);
 
     cout << "\nDo you want to visit the candy store?\n";
-    // cin >> candyStore1Visit;
-    candyStore1Visit = 'n';
+    cin >> candyStore1Visit;
     while((candyStore1Visit != 'y' && candyStore1Visit != 'Y') && (candyStore1Visit != 'n' && candyStore1Visit != 'N')){
         cin.clear();
         cin.ignore(1000,'\n');
@@ -483,13 +496,11 @@ int main(){
 
 
     cout << "Enter Player 2 name:\n";
-    // cin >> player2Name;
-    player2Name = "Sam";
+    cin >> player2Name;
     cout << "Awesome! Here is a list of characters a player can select from\n";
     displayCharacters(allCharacters);
     cout << "The selected character is\n";
-    // cin >> character2Name;
-    character2Name = "Honey_Harold";
+    cin >> character2Name;
     while(character1Name == character2Name){
         cout << "Cannot be the same character as " << player1Name << ". Please choose a different character\n";
         cin >> character2Name;
@@ -528,10 +539,10 @@ int main(){
     }
     cout << "Player 2 inventory is now \n";
     player2.printInventory();
+    player1.populatePlayer(character2Name);
 
     cout << "\nDo you want to visit the candy store?\n";
-    // cin >> candyStore2Visit;
-    candyStore2Visit = 'n';
+    cin >> candyStore2Visit;
     while((candyStore2Visit != 'y' && candyStore2Visit != 'Y') && (candyStore2Visit != 'n' && candyStore2Visit != 'N')){
         cin.clear();
         cin.ignore(1000,'\n');
@@ -571,13 +582,16 @@ int main(){
     //////////////////Actual Gameplay/////////////////////////////////////////////
     //////////////////Actual Gameplay/////////////////////////////////////////////
 
-    // while(game_board.getPlayer1Position() < 83 && game_board.getPlayer2Position() < 83)
 
+    cout << "Let's begin the game. Here is the board:\n";
+    game_board.displayBoard();
     int menuChoice;
     int movePlayer1;
     int movePlayer2;
+    string candyToUse;
     game_board.resetBoard();
-    while(endOfGame == false){  
+    while(endOfGame == false){  //make sure players lose their turn or not
+        
         cout << "It's " << player1Name << "'s turn\nPlease select a menu option\n";
         cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
         cin >> menuChoice;
@@ -587,25 +601,28 @@ int main(){
             cout << "Invalid choice, try again\n";
             cin >> menuChoice;
         }
-        // if(menuChoice == 1){
-        //     int drawResult = player1.drawCard();
-        //     movePlayer1 = determineMoveAmount(game_board.getPlayer1Position(), drawResult);
-        //     game_board.movePlayer1(movePlayer1);
-        //     game_board.displayBoard();
-
-        // }
-        if(menuChoice == 1){
-        int drawResult = player2.drawCard();
-        movePlayer2 = determineMoveAmount(game_board.getPlayer2Position(), drawResult);
-        game_board.movePlayer2(movePlayer2);
-        game_board.displayBoard();
-
+        if(menuChoice == 1){//add check for stores, add calamities(fix calamities first)
+            movePlayer1 = determineMoveAmount(game_board.getPlayer1Position(), player1.drawCard());
+            game_board.movePlayer1(movePlayer1);
+            game_board.displayBoard();
+            hasTurn1 = Calamities(player1);
         }
         else if(menuChoice == 2){
+            cin.ignore(1000,'\n');
+            cout << "Here is a list of your candies:\n";
+            player1.printInventory();
+            cout << "Enter a candy you wish to use\n";
+            getline(cin, candyToUse);
+            //check if its right, use it
 
+            cout << "You have used the "; // << candy name << " candy. This has "
         }
         else if(menuChoice == 3){
-
+            cout << "Here are your stats:\n";
+            cout << "Player name: " << player1Name << endl;
+            cout << "Character: " << character1Name << endl;
+            cout << "Stamina: " << player1.getStamina() << endl;
+            cout << "Gold: " << player1.getGold() << endl;
         }
 
 
@@ -613,16 +630,14 @@ int main(){
         //////////then do player 2//////////
         //////////then do player 2//////////
 
-        // cout << game_board.getPlayer1Position() << " " << game_board.getPlayer2Position() << endl;
+
+
+
+     // cout << game_board.getPlayer1Position() << " " << game_board.getPlayer2Position() << endl;
         if(game_board.getPlayer1Position() >= 83 || game_board.getPlayer2Position() >= 83){
             endOfGame = true;
         }
 
-
-
-        // if(game_board.getPlayer1Position() <= 83 && game_board.getPlayer2Position() <= 83){
-        //     endOfGame = true;
-        // }
     }
 
     /*

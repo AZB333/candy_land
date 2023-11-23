@@ -230,3 +230,22 @@ bool Player::playRockPaperScissors(){
     return false;
 
 }
+
+void Player::populatePlayer(string character){
+    if(character == "Toffee_Todd"){
+        setStamina(200);
+        setGold(20);
+    }
+    else if(character == "Chocolate_Charlie"){
+        setStamina(50);
+        setGold(100);
+    }
+    else if(character == "Sour_Saul"){
+        setStamina(100);
+        setGold(60);
+    }
+    else if(character == "Honey_Harold"){
+        setStamina(150);
+        setGold(40);
+    }
+}
