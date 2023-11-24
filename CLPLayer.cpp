@@ -155,7 +155,7 @@ bool Player::removeCandy(string name){
         } 
     }
     if(foundFlag == true){
-        for(int j = removeIndex; j < 3;j++){
+        for(int j = removeIndex; j < 8;j++){
             _inventory[j] = _inventory[j + 1];
         }   
 
@@ -248,4 +248,13 @@ void Player::populatePlayer(string character){
         setStamina(150);
         setGold(40);
     }
+}
+
+bool Player::hasMagicCandy(){
+    for(int i = 0; i < 9; i++){
+        if(_inventory[i].candy_type == "magical"){
+            return true;
+        }
+    }
+    return false;
 }
