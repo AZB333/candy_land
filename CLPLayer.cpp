@@ -133,6 +133,7 @@ bool Player::addCandy(Candy c){
         _inventory[_candy_amount] = c;
     }
     setCandyAmount(getCandyAmount() + 1);
+
     return true;
 }
 
@@ -235,18 +236,22 @@ void Player::populatePlayer(string character){
     if(character == "Toffee_Todd"){
         setStamina(200);
         setGold(20);
+        return;
     }
     else if(character == "Chocolate_Charlie"){
         setStamina(50);
         setGold(100);
+        return;
     }
     else if(character == "Sour_Saul"){
         setStamina(100);
         setGold(60);
+        return;
     }
     else if(character == "Honey_Harold"){
         setStamina(150);
         setGold(40);
+        return;
     }
 }
 
@@ -257,4 +262,24 @@ bool Player::hasMagicCandy(){
         }
     }
     return false;
+}
+
+bool Player::hasImmunityCandy(){
+    for(int i = 0; i < 9; i++){
+        if(_inventory[i].candy_type == "immunity"){
+            return true;
+        }
+    }
+    return false;
+}
+
+Candy Player::findImmunityCandy(){
+    Candy empty = {"","","",0,"",0};
+    
+    for(int i = 0; i < 9; i++){
+        if(_inventory[i].candy_type == "immunity"){
+            return _inventory[i];
+        }
+    }
+    return empty;
 }

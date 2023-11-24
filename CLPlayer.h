@@ -35,9 +35,9 @@ class Player{
         int drawCard();
         bool playRockPaperScissors();
         void populatePlayer(string);
-        //need like a player candy type scanner
-        //loop through inventory, find if its magical
         bool hasMagicCandy();
+        bool hasImmunityCandy();
+        Candy findImmunityCandy();
 
 };
 

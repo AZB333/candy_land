@@ -516,9 +516,6 @@ int main(){
             startingCandy1Found = true;
             visitCandy1Store = player1.addCandy(startingStore1.findCandy(startingStore1Choice));
         }
-        cout << "Player 1 inventory is now\n";
-        player1.printInventory();
-        cout << endl;
         while(startingCandy1Found == false){
             cin.clear();
             cout << "Invalid input. Please try again\n";
@@ -527,11 +524,13 @@ int main(){
                 player1.addCandy(startingStore1.findCandy(startingStore1Choice));
                 startingCandy1Found = true;
             }
-            cout << "Player 1 inventory is now\n";
-            player1.printInventory();
-            cout << endl;
         }
     }
+        cout << "Player 1 inventory is now\n";
+        player1.printInventory();
+        player1.setGold(player1.getGold() - player1.findCandy(startingStore1Choice).price);
+        cout << endl;
+        
 
     //////////////////////////////////Player 2 land///////////////////////////////////
     //////////////////////////////////Player 2 land///////////////////////////////////
@@ -588,7 +587,7 @@ int main(){
     }
     cout << "Player 2 inventory is now \n";
     player2.printInventory();
-    player1.populatePlayer(character2Name);
+    player2.populatePlayer(character2Name);
 
     cout << "\nDo you want to visit the candy store?\n";
     cin >> candyStore2Visit;
@@ -608,10 +607,7 @@ int main(){
             startingCandy2Found = true;
             visitCandy2Store = player2.addCandy(startingStore2.findCandy(startingStore2Choice));
         }
-        cout << "Player 2 inventory is now\n";
-        player2.printInventory();
-        cout << endl;
-
+        
         while(startingCandy2Found == false){
             cin.clear();
             cout << "Invalid input. Please try again\n";
@@ -620,10 +616,12 @@ int main(){
                 player2.addCandy(startingStore2.findCandy(startingStore2Choice));
                 startingCandy2Found = true;
             }
-            cout << "Player 2 inventory is now\n";
-            player2.printInventory();
-            cout << endl;
         }
+        cout << "Player 2 inventory is now\n";
+        player2.printInventory();
+        player2.setGold(player2.getGold() - player2.findCandy(startingStore2Choice).price);
+        cout << endl;
+
     }
 
 
@@ -640,10 +638,167 @@ int main(){
     int menu2Choice;
     int movePlayer1;
     int movePlayer2;
+    int gummyTile = -1;
+    bool p1Lose2Turns = false;
+    bool p2Lose2Turns = false;
+    bool store1Found = false;
+    bool store2Found = false;
+    bool store3Found = false;
+    bool can1UseStore = true;
+    bool can2UseStore = true;
     string candyToUse;
+    string store1Choice;
+    string store2Choice;
+    string store3Choice;
+    Candy store1P1;
+    Candy store1P2;
+    Candy store2P1;
+    Candy store2P2;
+    Candy store3P1;
+    Candy store3P2;
+
+    
     game_board.resetBoard();
+
     while(endOfGame == false){  
-        if(hasTurn1 == false){
+        
+        if(game_board.getPlayer1Position() == store1Pos){//candy store checks
+            store1Choice = "reset";
+            cin.ignore(1000,'\n');
+            store1.populateStore(candyFileName, allCandies);
+            store1.displayCandies();
+            getline(cin, store1Choice);
+            if(store1Choice == store1.findCandy(store1Choice).name){
+                store1Found = true;
+                player1.addCandy(store1.findCandy(store1Choice));
+            }
+        
+            while(store1Found == false){
+                cin.clear();
+                cout << "Invalid input. Please try again\n";
+                getline(cin, store1Choice);
+                if(store1Choice == store1.findCandy(store1Choice).name){
+                    player1.addCandy(store1.findCandy(store1Choice));
+                    store1Found = true;
+                }
+                cout << "Player 1 inventory is now\n";
+                player1.printInventory();
+                player1.setGold(player1.getGold() - player1.findCandy(store1Choice).price);
+                cout << endl;
+            }
+
+            can1UseStore = false;
+        }
+
+        if(game_board.getPlayer2Position() == store1Pos){//candy store player 2
+            store1Choice = "reset";
+            cin.ignore(1000,'\n');
+            store1.populateStore(candyFileName, allCandies);
+            store1.displayCandies();
+            getline(cin, store1Choice);
+        if(store1Choice == store1.findCandy(store1Choice).name){
+            store1Found = true;
+            player1.addCandy(store1.findCandy(store1Choice));
+        }
+        
+        while(store1Found == false){
+            cin.clear();
+            cout << "Invalid input. Please try again\n";
+            getline(cin, store1Choice);
+            if(store1Choice == store1.findCandy(store1Choice).name){
+                player1.addCandy(store1.findCandy(store1Choice));
+                store1Found = true;
+            }
+        }
+        cout << "Player 1 inventory is now\n";
+        player1.printInventory();
+        player1.setGold(player1.getGold() - player1.findCandy(store1Choice).price);
+        cout << endl;
+        }
+
+        else if(game_board.getPlayer1Position() == store2Pos || game_board.getPlayer2Position() == store2Pos){
+            cin.ignore(1000,'\n');
+            store2Choice = "reset";
+            store2.populateStore(candyFileName, allCandies);
+            store2.displayCandies();
+            getline(cin, store2Choice);
+            if(store2Choice == store2.findCandy(store2Choice).name){
+                store2Found = true;
+                player1.addCandy(store2.findCandy(store2Choice));
+            }
+            
+            while(store2Found == false){
+                cin.clear();
+                cout << "Invalid input. Please try again\n";
+                getline(cin, store2Choice);
+                if(store2Choice == store2.findCandy(store2Choice).name){
+                    player1.addCandy(store2.findCandy(store2Choice));
+                    store2Found = true;
+                }
+            }
+            cout << "Player 1 inventory is now\n";
+            player1.printInventory();
+            player1.setGold(player1.getGold() - player1.findCandy(store2Choice).price);
+            cout << endl;
+        }
+
+
+        else if(game_board.getPlayer1Position() == store3Pos || game_board.getPlayer2Position() == store3Pos){
+            store3Choice = "reset";
+            cin.ignore(1000,'\n');
+            store3.populateStore(candyFileName, allCandies);
+            store3.displayCandies();
+            getline(cin, store3Choice);
+            if(store3Choice == store3.findCandy(store3Choice).name){
+                store3Found = true;
+                player1.addCandy(store3.findCandy(store3Choice));
+            }
+            
+            while(store3Found == false){
+                cin.clear();
+                cout << "Invalid input. Please try again\n";
+                getline(cin, store3Choice);
+                if(store3Choice == store3.findCandy(store3Choice).name){
+                    player1.addCandy(store3.findCandy(store3Choice));
+                    store3Found = true;
+                }
+            }
+            cout << "Player 1 inventory is now\n";
+            player1.printInventory();
+            player1.setGold(player1.getGold() - player1.findCandy(store3Choice).price);
+            cout << endl;
+        }
+
+        // check if player has 0 stamina
+        /*if(player1.getStamina() <= 0 || game_board.getPlayer1Position() == gummyTile){
+            p1Lose2Turns = true;
+        }
+        if(player2.getStamina() <= 0 || game_board.getPlayer2Position() == gummyTile){
+            p2Lose2Turns = true;
+        }
+        if(p1Lose2Turns == true){
+            int turnMissed = 0;
+            cout << player1Name << " has no stamina and must miss two turns to regain stamina\n";
+            hasTurn1 = false;
+            turnMissed++;
+            if(turnMissed == 2){
+                hasTurn1 = true;
+            }
+        }
+        if(p2Lose2Turns == true){
+            int turnMissed = 0;
+            cout << player2Name << " has no stamina and must miss two turns to regain stamina\n";
+            hasTurn2 = false;
+            turnMissed++;
+            if(turnMissed == 2){
+                hasTurn2 = true;
+            }
+        }*/
+        
+        
+
+
+        if(hasTurn1 == false){//checking if player has their turn
             cout << player1Name << " has lost their turn, it is now " << player2Name << "'s turn\n";
             cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
             cin >> menu2Choice;
@@ -659,21 +814,71 @@ int main(){
             cout << "Invalid choice, try again\n";
             cin >> menu1Choice;
         }
-        if(menu1Choice == 1){//add check for stores, add calamities(fix calamities first)
+        if(menu1Choice == 1){
             movePlayer1 = determineMoveAmount(game_board.getPlayer1Position(), player1.drawCard());
             game_board.movePlayer1(movePlayer1);
             game_board.displayBoard();
+            player1.setStamina(player1.getStamina() - 1);
             hasTurn1 = Calamities(player1);
         }
         else if(menu1Choice == 2){//need to do conditionals depending on players candy type
+            bool candyFound = false;
             cin.ignore(1000,'\n');
             cout << "Here is a list of your candies:\n";
             player1.printInventory();
-            cout << "Enter a candy you wish to use\n";
+            cout << "\nEnter a candy you wish to use\n";
             getline(cin, candyToUse);
-            //check if its right, use it
-
-            cout << "You have used the "; // << candy name << " candy. This has "
+            if(candyToUse == player1.findCandy(candyToUse).name){
+                candyFound = true;
+            }
+            while(candyFound == false){
+                cin.clear();
+                cout << "Not a valid candy in your inventory. Please try again\n";
+                getline(cin, candyToUse);
+                if(candyToUse == player1.findCandy(candyToUse).name){
+                    candyFound = true;
+                }
+            }
+            if(player1.findCandy(candyToUse).candy_type == "magical"){
+                cout << "You have used " << candyToUse << ". Your stamina is increased by " << player1.findCandy(candyToUse).effect_value << " points.\n";
+                player1.setStamina(player1.getStamina() + player1.findCandy(candyToUse).effect_value);
+                player1.removeCandy(candyToUse);
+                
+                // if(player1.getStamina() > 100){ not sure if this is needed, instructions are unclear
+                //     player1.setStamina(100);
+                // }
+            }
+            else if(player1.findCandy(candyToUse).candy_type == "poison"){
+                char useCandy;
+                cout << "Do you want to use " << candyToUse << " against your opponent?\n";
+                cin >> useCandy;
+                if(useCandy == 'y' || useCandy == 'y'){
+                    if(player2.hasImmunityCandy()){
+                        cout << "You have used " << candyToUse << " but your opponent has " << player2.findImmunityCandy().name << " to protect against your poison candy\n";
+                        player1.removeCandy(candyToUse);
+                        player2.removeCandy(player2.findImmunityCandy().name);
+                    }
+                    else{
+                        cout << "You have used " << candyToUse << " and your opponent has lost " << player1.findCandy(candyToUse).effect_value << " points.\n";
+                        player1.removeCandy(candyToUse);
+                        player2.setStamina(player2.getStamina() - player1.findCandy(candyToUse).effect_value);
+                    }
+                }
+            }
+            else if(player1.findCandy(candyToUse).candy_type == "gummy"){
+                cout << "Which tile do you want to place " << candyToUse << " - gummy candy?\n";
+                cin >> gummyTile;
+                while(gummyTile < 0 || gummyTile > 83){
+                    cin.clear();
+                    cout << "Invalid input. Please try again\n";
+                    cin >> gummyTile;
+                }
+                cout << "You have successfully placed a gummy candy on tile " << gummyTile << ". Any player that lands on the gummy tile will be obstructed from advancing past the tile for two moves.\n";
+                player1.removeCandy(candyToUse);
+            }
+            else if(player1.findCandy(candyToUse).candy_type == "immunity"){
+                cout << "Immunity candies are used when they need to be, so you don't need to use them here\n";
+            }
         }
         else if(menu1Choice == 3){
             cout << "Here are your stats:\n";
