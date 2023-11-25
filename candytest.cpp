@@ -15,65 +15,12 @@ struct Character{
     int stamina;
     int gold;
     vector<string> candies;
-    /*void displayCharacter(vector<Character> characters){
-        for(int i = 0; i < characters.size(); i++){
-            cout << "Name: " << characters[i].name << endl;
-            cout << "Stamina: " << characters[i].stamina << endl;
-            cout << "Gold: " << characters[i].gold << endl;
-            cout << "Candies:\n";
-            for(int j = 0; j < characters[i].candies[j].size(); i++){
-                cout << "[" << characters[i].candies[j] << "]";
-                if(j == 2 || j == 5){
-                    cout << endl;
-                }
-            }
-
-        }
-    }*/
 };
 
-/*
-what questions for reciation this week:
-how much does stamina deplete and increase by each turn
-
-In the first 27 tiles, a candy store will be on a magenta-colored tile. 
-Between tiles 28 and 54, a candy store will appear on a green-colored tile. 
-And from tile 55 to 82, a candy store will be on a blue tile.
-*/
-
-/*
-steps: push after each step
-1. make board - done
-2. make store class - done
-3. make player class
-4. make card drawing function
-5. define data members, getters and setters
-6. create necessary functions
-7. populate necessary functions
-8. 
-9. 
-10.  
-*/
-
-
-
-
-
-/*
-things to do: 
-vector of possible characters
-make characters, sour saul, haribo heisenburg, chocolate charlie, toffee todd
-game class that keeps track of players, characters, properties, etc
-
-player class, neccessary member is an array of candies
-candy array has max size of nine, if player has nine, they have to substitue a candy
-
-
-
-fout to a finsihed stats file called results.txt    
-*/
-
-
+struct Riddle{
+    string question;
+    string answer;
+};
 
 vector<Candy> readCandy(string file_name, vector<Candy> candies){ //add extra candy members
     cout << fixed << setprecision(2);
@@ -174,7 +121,6 @@ vector<Character> readCharacter(string fileName, vector<Character> characters){
                     stringstream candySS(line);
                     while(getline(candySS, line, ',')){
                         candyNames.push_back(line);
-                        //just the candy name in file, gotta find name from allcandies then add it?
                     }
                 }
             }
@@ -193,8 +139,51 @@ vector<Character> readCharacter(string fileName, vector<Character> characters){
 
 }
 
+vector<Riddle> readRiddles(string fileName, vector<Riddle> riddles){
+    ifstream riddleFile;
+    string line;
+    riddleFile.open(fileName);
+    if(riddleFile.fail()){
+        cout << "Failed to load text file\n";
+        return riddles;
+    }
+    else{
 
-
+    //     while(getline(riddleFile, line)){
+    //         stringstream ss(line);
+    //         int iterator = 0;
+    //         Riddle current_riddle;
+    //         if(line.size() != 0){
+    //         while(getline(ss, line, '|')){
+    //             if(iterator == 0){
+    //                 iterator ++;
+    //                 current_riddle.question = line;
+    //                 // question = line;
+    //             } else if(iterator == 1){
+    //                 // answer = line;
+    //                 current_riddle.question = line;
+    //         }
+    //         // current_riddle.question = question;
+    //         // current_riddle.answer = answer;
+    //         riddles.push_back(current_riddle);
+    //         }
+    //     }
+    // }
+        while(getline(riddleFile, line)){//this works i guess
+        stringstream ss(line);
+        string question;
+        string answer;
+        if(getline(ss, question, '|') && getline(ss, answer)){
+            Riddle current_riddle;
+            current_riddle.question = question;
+            current_riddle.answer = answer;
+            riddles.push_back(current_riddle);
+        }
+    }
+    riddleFile.close();
+    return riddles;
+}
+}
 
 bool Calamities(Player &player){//player is passed by reference
     srand((unsigned) time(NULL));
@@ -285,7 +274,6 @@ bool Calamities(Player &player){//player is passed by reference
                         player.setStamina(0);
                     }
                     cout << "You tried to surf the avalanche and fell, losing " << stamLost << " stamina and your next turn\n";
-                    //setter
                     return false;
                 }
             }
@@ -345,6 +333,98 @@ bool Calamities(Player &player){//player is passed by reference
     return true;
 }
 
+int specialTiles(Player &player){
+    int randomTile = rand() % 100 + 1;
+    if(randomTile ==96){
+        cout << "You landed on a Shortcut Tile! You've been given the golden opportunity to leap ahead four tiles!\n";
+        return 1;
+    }
+    else if(randomTile == 97){
+        cout << "You landed on an Ice Cream Shop Tile! You've been given an additional turn!\n";
+        return 2;
+    }
+    else if(randomTile == 98){
+        int goldLost = rand() % 5 + 10;
+        cout << "Uh oh, a Gumdrop Forest Tile! You have lost " << goldLost << " gold, and were moved back 4 tiles\n";
+        return 3;
+    }
+    else if(randomTile == 99){
+        cout << "You've landed on a Gingerbread House Tile! You've been moved back to your previous position, and you've lost an immunity candy!\n";
+        return 4;
+    }
+    return 0;
+}
+
+bool answerRiddle(vector<Riddle> riddles){
+    cin.ignore(1000,'\n');
+    const int riddleRandom = rand() % riddles.size();
+    int riddleIndex = riddleRandom;
+    string riddleToSolve = riddles[riddleIndex].question;
+    string riddleAnswer;
+    cout << "To earn the hidden treasure, you must answer this riddle\n";
+    cout << riddles[riddleIndex].question;
+    cout << endl;
+    getline(cin, riddleAnswer);
+    if(riddleAnswer != riddles[riddleIndex].answer){
+        cout << "Unfortunately that is incorrect, the correct answer was " << riddles[riddleIndex].answer << endl;
+        return false;
+    }
+    else if(riddleAnswer == riddles[riddleIndex].answer){
+        cout << "Congratulations! You have solved the riddle and discovered a hidden treasure!\n";
+        return true;
+    }
+    return false;
+}
+
+void hiddenTreasures(Player &player,vector<Riddle> riddles){
+    cout << "You have discovered a hidden treasure! ";
+    bool riddleSolved = answerRiddle(riddles); //getting the treasure is determined by the answerRiddle function
+    cout << "Riddle solved value is " << riddleSolved << endl;
+    int treasureType = rand() % 100 + 1;
+    if(riddleSolved == true){
+        if(treasureType > 0 && treasureType <= 30){
+            int staminaRefill = rand() % 20 + 10;
+            cout << "You found a hidden treasure! Your stamina has been replenished by " << staminaRefill << " units!\n";
+            player.setStamina(player.getStamina() + staminaRefill);
+        }
+        else if(treasureType > 30 && treasureType <= 40){
+            int goldGain = rand() % 20 + 20;
+            cout << "You found a hidden treasure! You have found " << goldGain << " gold!\n";
+            player.setGold(player.getGold() + goldGain);
+            if(player.getGold() > 100){
+                player.setGold(100);
+            }
+        }
+        else if(treasureType > 40 && treasureType <= 70){
+            Candy robbersRepel = {"Robber's Repel","An anti-robbery shield, safeguarding the player's gold from potential theft by others during their journey","protection",0,"repel",0};
+            cout << "You have found the Robber's Repel Candy! Use this candy to avoid being robbed when landing on another player's tile!\n";
+            player.addCandy(robbersRepel);
+            cout << "Player inventory is now \n";
+            player.printInventory();
+            cout << endl;
+        }
+        else if(treasureType > 70 && treasureType <= 100){
+            int acquisitionType = rand() % 100 + 1;
+            if(acquisitionType <= 70){
+                Candy vigorBean = {"Jellybean of Vigor","","stamina",50,"stamina",0};
+                cout << "You found the Jellybean of Vigor! Using it boosts stamina by 50 points!\n";
+                player.addCandy(vigorBean);
+                cout << "Player inventory is now \n";
+                player.printInventory();
+                cout << endl;
+            }
+            else{
+                Candy treasureTruffle = {"Treasure Hunter's Truffle","allows the player to unlock a hidden treasure","",0,"",0};
+                cout << "You found the Treasure Hunter's Truffle! If you use it, you have the ability to solve a riddle for another hidden treasure!\n";
+                player.addCandy(treasureTruffle);
+                cout << "Player inventory is now \n";
+                player.printInventory();
+                cout << endl;
+            }
+        }
+    }
+}
+
  int determineMoveAmount(int playerPos, int cardResult){
     int moveAmount = 0;
     if((playerPos % 3 == 0 && cardResult == 2) || (playerPos % 3 == 1 && cardResult == 3) || (playerPos % 3 == 2 && cardResult == 1)){//pos two less than result
@@ -384,8 +464,9 @@ void displayCharacters(vector<Character> characters){
     }
 }
 
+
 void visitCandyStore(bool canVisitStatus, Player &player, Store &store){
-    bool store1Found = false;
+    bool storeFound = false;
     if(canVisitStatus == false){
         return;
     } else{
@@ -394,17 +475,22 @@ void visitCandyStore(bool canVisitStatus, Player &player, Store &store){
         store.displayCandies();
         getline(cin, storeChoice);
         if(storeChoice == store.findCandy(storeChoice).name){
-            store1Found = true;
+            storeFound = true;
             player.addCandy(store.findCandy(storeChoice));
+             cout << "Player 1 inventory is now\n";
+            player.printInventory();
+            player.setGold(player.getGold() - player.findCandy(storeChoice).price);
+            cout << endl;
+        
         }
     
-        while(store1Found == false){
+        while(storeFound == false){
             cin.clear();
             cout << "Invalid input. Please try again\n";
             getline(cin, storeChoice);
             if(storeChoice == store.findCandy(storeChoice).name){
                 player.addCandy(store.findCandy(storeChoice));
-                store1Found = true;
+                storeFound = true;
             }
             cout << "Player 1 inventory is now\n";
             player.printInventory();
@@ -417,6 +503,7 @@ void visitCandyStore(bool canVisitStatus, Player &player, Store &store){
 }
 
 
+
 int main(){
     srand((unsigned) time(NULL));
     Board game_board; //game prep variables
@@ -424,10 +511,13 @@ int main(){
     Player player2;
     string candyFileName = "candy.txt";
     string characterFileName = "characters.txt";
+    string riddleFileName = "riddles.txt";
     vector<Candy> allCandies;
     vector<Character> allCharacters;
+    vector<Riddle> allRiddles;
     allCandies = readCandy(candyFileName, allCandies);
     allCharacters = readCharacter(characterFileName, allCharacters);
+    allRiddles = readRiddles(riddleFileName, allRiddles);
     bool rpsStatus;
     bool endOfGame = false;
     bool hasTurn1 = true;
@@ -663,13 +753,16 @@ int main(){
     }
 
 
-    //////////////////Actual Gameplay/////////////////////////////////////////////
+   //////////////////Actual Gameplay/////////////////////////////////////////////
     //////////////////Actual Gameplay/////////////////////////////////////////////
     //////////////////Actual Gameplay/////////////////////////////////////////////
     //////////////////Actual Gameplay/////////////////////////////////////////////
     //////////////////Actual Gameplay/////////////////////////////////////////////
 
 
+    int hiddenTreasure1 = rand() % 27 + 1;//make the hidden treasure locations
+    int hiddenTreasure2 = rand() % 27 + 28;
+    int hiddenTreasure3 = rand() % 27 + 55;
     cout << "Let's begin the game. Here is the board:\n";
     game_board.displayBoard();
     int menu1Choice;
@@ -679,7 +772,7 @@ int main(){
     int gummyTile = -1;
     bool p1Lose2Turns = false;
     bool p2Lose2Turns = false;
-    bool store1Found = false;
+    bool storeFound = false;
     bool store2Found = false;
     bool store3Found = false;
     bool can1UseStore1 = true;
@@ -689,16 +782,24 @@ int main(){
     bool can2UseStore2 = true;
     bool can2UseStore3 = true;
 
+
     bool can2UseStore = true;
     string candyToUse;
 
+    
     game_board.resetBoard();
+    cout << hiddenTreasure1 << " "<< hiddenTreasure2 << " " << hiddenTreasure3 << endl;
 
-    //remove these later
-    cout << store1Pos << " " << store2Pos << " " << store3Pos << endl;
     while(endOfGame == false){  
-
-        if(can1UseStore1 == true && game_board.getPlayer1Position() == store1Pos){
+        int test;
+        game_board.movePlayer1(1);
+        if(game_board.getPlayer1Position() == hiddenTreasure1 || game_board.getPlayer1Position() == hiddenTreasure2 || game_board.getPlayer1Position() == hiddenTreasure3)
+        hiddenTreasures(player1,allRiddles);
+        cin >> test;
+        
+        
+       
+        /*if(can1UseStore1 == true && game_board.getPlayer1Position() == store1Pos){
             store1.populateStore(candyFileName, allCandies);
             visitCandyStore(can1UseStore1,player1,store1);
             can1UseStore1 = false;
@@ -731,7 +832,7 @@ int main(){
             can2UseStore3 = false;
         }
         // check if player has 0 stamina
-        /*if(player1.getStamina() <= 0 || game_board.getPlayer1Position() == gummyTile){
+        if(player1.getStamina() <= 0 || game_board.getPlayer1Position() == gummyTile){
             p1Lose2Turns = true;
         }
         if(player2.getStamina() <= 0 || game_board.getPlayer2Position() == gummyTile){
@@ -754,12 +855,10 @@ int main(){
             if(turnMissed == 2){
                 hasTurn2 = true;
             }
-        }*/
-        
+        }
         
 
-
-        if(hasTurn1 == false){//checking if player has their turn
+        if(hasTurn1 == false){//checking if player has their turn, put before player 1
             cout << player1Name << " has lost their turn, it is now " << player2Name << "'s turn\n";
             cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
             cin >> menu2Choice;
@@ -775,12 +874,13 @@ int main(){
             cout << "Invalid choice, try again\n";
             cin >> menu1Choice;
         }
-        if(menu1Choice == 1){//draw card function, checks for calamities, hidden tiles
+        if(menu1Choice == 1){
             movePlayer1 = determineMoveAmount(game_board.getPlayer1Position(), player1.drawCard());
             game_board.movePlayer1(movePlayer1);
-            // game_board.displayBoard();
+            game_board.displayBoard();
             player1.setStamina(player1.getStamina() - 1);
             hasTurn1 = Calamities(player1);
+            hiddenTreasures(player1, game_board.getPlayer1Position(), allRiddles);
         }
         else if(menu1Choice == 2){//need to do conditionals depending on players candy type
             bool candyFound = false;
@@ -800,12 +900,12 @@ int main(){
                     candyFound = true;
                 }
             }
-            //make exception handling for this
             if(player1.findCandy(candyToUse).candy_type == "magical"){
                 cout << "You have used " << candyToUse << ". Your stamina is increased by " << player1.findCandy(candyToUse).effect_value << " points.\n";
                 player1.setStamina(player1.getStamina() + player1.findCandy(candyToUse).effect_value);
                 player1.removeCandy(candyToUse);
-                // if(player1.getStamina() > 100){ im not sure if this needs to be here, instructions are unclear
+                
+                // if(player1.getStamina() > 100){ not sure if this is needed, instructions are unclear
                 //     player1.setStamina(100);
                 // }
             }
@@ -820,7 +920,7 @@ int main(){
                         player2.removeCandy(player2.findImmunityCandy().name);
                     }
                     else{
-                        cout << "You have used " << candyToUse << " and your opponent has lost " << player1.findCandy(candyToUse).effect_value << "points.\n";
+                        cout << "You have used " << candyToUse << " and your opponent has lost " << player1.findCandy(candyToUse).effect_value << " points.\n";
                         player1.removeCandy(candyToUse);
                         player2.setStamina(player2.getStamina() - player1.findCandy(candyToUse).effect_value);
                     }
@@ -841,15 +941,12 @@ int main(){
                 cout << "Immunity candies are used when they need to be, so you don't need to use them here\n";
             }
         }
-        else if(menu1Choice == 3){//display stats
+        else if(menu1Choice == 3){
             cout << "Here are your stats:\n";
             cout << "Player name: " << player1Name << endl;
             cout << "Character: " << character1Name << endl;
             cout << "Stamina: " << player1.getStamina() << endl;
             cout << "Gold: " << player1.getGold() << endl;
-            // cout << "It's " << player1Name << "'s turn\nPlease select a menu option\n";
-            // cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
-            // cin >> menu1Choice;
         }
 
 
@@ -857,7 +954,7 @@ int main(){
         //////////then do player 2//////////
         //////////then do player 2//////////
 
-
+    */
 
     // cout << game_board.getPlayer1Position() << " " << game_board.getPlayer2Position() << endl;
         if(game_board.getPlayer1Position() >= 83 || game_board.getPlayer2Position() >= 83){
@@ -871,6 +968,7 @@ int main(){
 
     /*
 
+    once both players have chosen their characters, its time to start the game
 
     while(endOfGame == false){
         say its current player's turn, ask to draw card, use candy, or show player stats
@@ -894,7 +992,7 @@ int main(){
 
         ---------------------------------------
         candy store
-        use boarddriver stuff
+        use boarddriver stuff, add three candies to the players inventory
         display store
         set candies appropriately
         -------------------------------ne

@@ -160,7 +160,6 @@ vector<Riddle> readRiddles(string fileName, vector<Riddle> riddles){
                     iterator ++;
                     question = line;
                 } else if(iterator == 1){
-                    iterator++;
                     answer = line;
             }
             current_riddle.question = question;
@@ -351,6 +350,7 @@ bool answerRiddle(vector<Riddle> riddles){
     string riddleAnswer;
     cout << "To earn the hidden treasure, you must answer this riddle\n";
     cout << riddles[riddleIndex].question;
+    cout << endl;
     getline(cin, riddleAnswer);
     if(riddleAnswer != riddles[riddleIndex].answer){
         cout << "Unfortunately that is incorrect, the correct answer was " << riddles[riddleIndex].answer << endl;
@@ -360,49 +360,51 @@ bool answerRiddle(vector<Riddle> riddles){
         cout << "Congratulations! You have solved the riddle and discovered a hidden treasure!\n";
         return true;
     }
+    return false;
 }
 
 void hiddenTreasures(Player &player, int position,vector<Riddle> riddles){
-    //make a read riddle vector, pass as parameter here. 
     bool riddleSolved;
     riddleSolved = answerRiddle(riddles);
     int hiddenTreasure1 = rand() % 27 + 1;//make the hidden treasure locations
     int hiddenTreasure2 = rand() % 27 + 28;
     int hiddenTreasure3 = rand() % 27 + 55;
     int treasureType = rand() % 100 + 1;
-
-    if(position == hiddenTreasure1 || position == hiddenTreasure2 || position == hiddenTreasure3){
-        if(treasureType > 0 && treasureType >= 30){
-            int staminaRefill = rand() % 20 + 10;
-            cout << "You found a hidden treasure! Your stamina has been replenished by " << staminaRefill << " units!\n";
-            player.setStamina(player.getStamina() + staminaRefill);
-        }
-        else if(treasureType > 30 && treasureType <= 40){
-            int goldGain = rand() % 20 + 20;
-            cout << "You found a hidden treasure! You have found " << goldGain << " gold!\n";
-            player.setGold(player.getGold() + goldGain);
-            if(player.getGold() > 100){
-                player.setGold(100);
+    if(riddleSolved == true){
+        if(position == hiddenTreasure1 || position == hiddenTreasure2 || position == hiddenTreasure3){
+            if(treasureType > 0 && treasureType >= 30){
+                int staminaRefill = rand() % 20 + 10;
+                cout << "You found a hidden treasure! Your stamina has been replenished by " << staminaRefill << " units!\n";
+                player.setStamina(player.getStamina() + staminaRefill);
             }
-        }
-        else if(treasureType > 40 && treasureType <= 70){
-            Candy robbersRepel = {"Robber's Repel","An anti-robbery shield, safeguarding the player's gold from potential theft by others during their journey","protection",0,"repel",0};
-            player.addCandy(robbersRepel);
-        }
-        else if(treasureType > 70 && treasureType <= 100){
-            int acquisitionType = rand() % 100 + 1;
-            if(acquisitionType <= 70){
-                Candy vigorBean = {"Jellybean of Vigor","","stamina",50,"stamina",0};
-                cout << "You found the Jellybean of Vigor! Using it boosts stamina by 50 points!\n";
-                player.addCandy(vigorBean);
+            else if(treasureType > 30 && treasureType <= 40){
+                int goldGain = rand() % 20 + 20;
+                cout << "You found a hidden treasure! You have found " << goldGain << " gold!\n";
+                player.setGold(player.getGold() + goldGain);
+                if(player.getGold() > 100){
+                    player.setGold(100);
+                }
             }
-            else{
-                Candy treasureTruffle = {"Treasure Hunter's Truffle","allows the player to unlock a hidden treasure","",0,"",0};
-                cout << "You found the Treasure Hunter's Truffle! If you use it, you have the ability to solve a riddle for another hidden treasure!\n";
-                player.addCandy(treasureTruffle);
+            else if(treasureType > 40 && treasureType <= 70){
+                Candy robbersRepel = {"Robber's Repel","An anti-robbery shield, safeguarding the player's gold from potential theft by others during their journey","protection",0,"repel",0};
+                player.addCandy(robbersRepel);
+            }
+            else if(treasureType > 70 && treasureType <= 100){
+                int acquisitionType = rand() % 100 + 1;
+                if(acquisitionType <= 70){
+                    Candy vigorBean = {"Jellybean of Vigor","","stamina",50,"stamina",0};
+                    cout << "You found the Jellybean of Vigor! Using it boosts stamina by 50 points!\n";
+                    player.addCandy(vigorBean);
+                }
+                else{
+                    Candy treasureTruffle = {"Treasure Hunter's Truffle","allows the player to unlock a hidden treasure","",0,"",0};
+                    cout << "You found the Treasure Hunter's Truffle! If you use it, you have the ability to solve a riddle for another hidden treasure!\n";
+                    player.addCandy(treasureTruffle);
+                }
             }
         }
     }
+    
     
 }
 
