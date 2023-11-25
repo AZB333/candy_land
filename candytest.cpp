@@ -384,7 +384,7 @@ void displayCharacters(vector<Character> characters){
     }
 }
 
-void visitCandyStore(bool canVisitStatus, Player player, Store store){
+void visitCandyStore(bool canVisitStatus, Player &player, Store &store){
     bool store1Found = false;
     if(canVisitStatus == false){
         return;
@@ -682,30 +682,54 @@ int main(){
     bool store1Found = false;
     bool store2Found = false;
     bool store3Found = false;
-    bool can1UseStore;
-    bool can2UseStore;
-    string candyToUse;
-    string store1Choice;
-    string store2Choice;
-    string store3Choice;
-    Candy store1P1;
-    Candy store1P2;
-    Candy store2P1;
-    Candy store2P2;
-    Candy store3P1;
-    Candy store3P2;
+    bool can1UseStore1 = true;
+    bool can1UseStore2 = true;
+    bool can1UseStore3 = true;
+    bool can2UseStore1 = true;
+    bool can2UseStore2 = true;
+    bool can2UseStore3 = true;
 
-    
+    bool can2UseStore = true;
+    string candyToUse;
+
     game_board.resetBoard();
 
     //remove these later
     cout << store1Pos << " " << store2Pos << " " << store3Pos << endl;
     while(endOfGame == false){  
 
-        game_board.setPlayer1Position(store1Pos);
+        if(can1UseStore1 == true && game_board.getPlayer1Position() == store1Pos){
+            store1.populateStore(candyFileName, allCandies);
+            visitCandyStore(can1UseStore1,player1,store1);
+            can1UseStore1 = false;
+        }
+        else if(can1UseStore2 == true && game_board.getPlayer1Position() == store2Pos){
+            store2.populateStore(candyFileName, allCandies);
+            visitCandyStore(can1UseStore2,player1,store2);
+            can1UseStore2 = false;
+        }
+        else if(can1UseStore3 == true && game_board.getPlayer1Position() == store3Pos){
+            store3.populateStore(candyFileName, allCandies);
+            visitCandyStore(can1UseStore3,player1,store3);
+            can1UseStore3 = false;
+        }
 
-        visitCandyStore(can1UseStore,player1,store1);
 
+         if(can2UseStore1 == true && game_board.getPlayer2Position() == store1Pos){
+            store1.populateStore(candyFileName, allCandies);
+            visitCandyStore(can2UseStore1,player2,store1);
+            can2UseStore1 = false;
+        }
+        else if(can2UseStore2 == true && game_board.getPlayer2Position() == store2Pos){
+            store2.populateStore(candyFileName, allCandies);
+            visitCandyStore(can2UseStore2,player2,store2);
+            can2UseStore2 = false;
+        }
+        else if(can2UseStore3 == true && game_board.getPlayer2Position() == store3Pos){
+            store3.populateStore(candyFileName, allCandies);
+            visitCandyStore(can2UseStore3,player2,store3);
+            can2UseStore3 = false;
+        }
         // check if player has 0 stamina
         /*if(player1.getStamina() <= 0 || game_board.getPlayer1Position() == gummyTile){
             p1Lose2Turns = true;
