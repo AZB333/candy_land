@@ -38,6 +38,7 @@ class Player{
         bool hasMagicCandy();
         bool hasImmunityCandy();
         Candy findImmunityCandy();
+        Candy findMagicalCandy();
 
 };
 

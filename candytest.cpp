@@ -147,36 +147,25 @@ vector<Riddle> readRiddles(string fileName, vector<Riddle> riddles){
         cout << "Failed to load text file\n";
         return riddles;
     }
-    else{
+    else{            
+        string question = "";
+        string answer = "";
+        while(getline(riddleFile, line)){
 
-    //     while(getline(riddleFile, line)){
-    //         stringstream ss(line);
-    //         int iterator = 0;
-    //         Riddle current_riddle;
-    //         if(line.size() != 0){
-    //         while(getline(ss, line, '|')){
-    //             if(iterator == 0){
-    //                 iterator ++;
-    //                 current_riddle.question = line;
-    //                 // question = line;
-    //             } else if(iterator == 1){
-    //                 // answer = line;
-    //                 current_riddle.question = line;
-    //         }
-    //         // current_riddle.question = question;
-    //         // current_riddle.answer = answer;
-    //         riddles.push_back(current_riddle);
-    //         }
-    //     }
-    // }
-        while(getline(riddleFile, line)){//this works i guess
-        stringstream ss(line);
-        string question;
-        string answer;
-        if(getline(ss, question, '|') && getline(ss, answer)){
+            stringstream ss(line);
+            int iterator = 0;
             Riddle current_riddle;
+            if(line.size() != 0){
+            while(getline(ss, line, '|')){
+                if(iterator == 0){
+                    iterator ++;
+                    question = line;
+                } else if(iterator == 1){
+                    answer = line;
+            }
             current_riddle.question = question;
             current_riddle.answer = answer;
+            }
             riddles.push_back(current_riddle);
         }
     }
@@ -304,25 +293,16 @@ bool Calamities(Player &player){//player is passed by reference
                 cin >> useCandy;
             }
             if(useCandy == 'y' || useCandy == 'Y'){
+                if(useCandy == 'y' || useCandy == 'Y'){
                 player.printInventory();
                 string freeingCandy;
                 bool removedCandy;
                 cin.ignore(1000,'\n');
-                cout << "\nSelect the magical candy from your inventory to free yourself\n";
-                getline(cin, freeingCandy);
-                while(player.findCandy(freeingCandy).candy_type != "magical"){
-                    cin.clear();
-                    cout << "Please choose a magical candy type\n";
-                    getline(cin, freeingCandy);
-                }
-                removedCandy = player.removeCandy(freeingCandy);
-
-
-                cout << "removedCandy result is " << removedCandy << endl;
-
-                cout << "You have used " << freeingCandy << " to free yourself!\n";
-
+                Candy magicalCandy = player.findMagicalCandy();
+                cout << "\nYou have used " << magicalCandy.name << " to free yourself\n";
+                removedCandy = player.removeCandy(magicalCandy.name);
                 return true;
+            }
             }
             else if(useCandy == 'n' || useCandy == 'N'){
                 cout << "You have chosen not to use a candy to free yourself, losing your next turn\n";
@@ -364,6 +344,7 @@ bool answerRiddle(vector<Riddle> riddles){
     cout << "To earn the hidden treasure, you must answer this riddle\n";
     cout << riddles[riddleIndex].question;
     cout << endl;
+    cout << "Answer should be " << riddles[riddleIndex].answer << endl;
     getline(cin, riddleAnswer);
     if(riddleAnswer != riddles[riddleIndex].answer){
         cout << "Unfortunately that is incorrect, the correct answer was " << riddles[riddleIndex].answer << endl;
@@ -450,9 +431,10 @@ void hiddenTreasures(Player &player,vector<Riddle> riddles){
 
 void displayCharacters(vector<Character> characters){
         for(int i = 0; i < characters.size(); i++){ //this is the problem
-        cout << characters[i].name << " " << endl;
-        cout <<characters[i].stamina << " " << endl;
-        cout <<characters[i].gold << " " << endl;
+        cout << "Name: " << characters[i].name << " " << endl;
+        cout << "Stamina: " <<characters[i].stamina << " " << endl;
+        cout << "Gold: " <<characters[i].gold << " " << endl;
+        cout << "Candies: \n";
         for(int j = 0; j < characters[i].candies.size(); j++){
             cout << "[" << characters[i].candies[j] << "]   ";
             if(j > 0 && j % 3 == 2){

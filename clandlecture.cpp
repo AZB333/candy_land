@@ -1,3 +1,15 @@
+
+/*
+questions to ask in class:
+
+whats up with the stamina 
+is my way of character selection okay 
+
+
+*/
+
+
+
 #include <iostream>
 #include <cstdlib>
 #include <vector>

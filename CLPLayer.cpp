@@ -283,3 +283,13 @@ Candy Player::findImmunityCandy(){
     }
     return empty;
 }
+
+Candy Player::findMagicalCandy(){
+    Candy empty = {"","","",0,"",0};
+    
+    for(int i = 0; i > 9; i++){
+        if(_inventory[i].candy_type == "magical"){
+            return _inventory[i];
+        }
+    }
+}

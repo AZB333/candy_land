@@ -18,7 +18,7 @@ int main()
         if(board.isPositionCandyStore(i)){
             cout << "Welcome to Store " << iterator << ". Here's our selection!\n";
             Store store;
-            store.populateStore(fileName);
+            // store.populateStore(fileName);
             store.displayCandies();
             iterator++;
             cout << endl << endl;
