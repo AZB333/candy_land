@@ -292,4 +292,5 @@ Candy Player::findMagicalCandy(){
             return _inventory[i];
         }
     }
+    return empty;
 }

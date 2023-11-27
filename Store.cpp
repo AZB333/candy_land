@@ -29,29 +29,27 @@ void Store::displayCandies(){
 
 }
 
-void Store::populateStore(string fileName, vector<Candy> allCandies){//as far as i know this works
+void Store::populateStore(string fileName, vector<Candy> allCandies){
     srand((unsigned) time(NULL));
-    int random;
-    int cantUse[4];
-    for(int i = 0; i < 3; i++){//should populate the store four times
-        random = rand() % allCandies.size();
-        cantUse[i] = random;
-        for(int j = 0; j < 3; j++){//checks if that value has already been used
-            if(i != j && cantUse[i] == cantUse[j]){
-                if(random < 11){
-                    _store_inventory[j] = allCandies[random + 2];
-                }else if(random > 2){
-                    _store_inventory[j] = allCandies[random - 2];
-                }
-            }
-            else{
-                _store_inventory[i] = allCandies[random];
-            }
-            
+        int candy1Index = rand() % allCandies.size();
+        int candy2Index;
+        int candy3Index;
+        if(candy1Index > 2 && candy1Index < 10){
+            int candy2Index = candy1Index - 2;
+            int candy3Index = candy1Index + 2;
         }
-    }
-
-
+        else if(candy1Index < 2){
+            candy2Index = candy1Index + 2;
+            candy3Index = candy1Index + 4;
+        }
+        else if(candy1Index > 10){
+            candy2Index = candy1Index - 2;
+            candy2Index = candy1Index - 4;
+        }
+        _store_inventory[0] = allCandies[candy1Index];
+        _store_inventory[1] = allCandies[candy2Index];
+        _store_inventory[2] = allCandies[candy3Index];
+        
 }
 
 Candy Store::findCandy(string candyName){
