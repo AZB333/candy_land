@@ -311,7 +311,8 @@ bool Calamities(Player &player){//player is passed by reference
     return true;
 }
 
-int specialTiles(Player &player){
+int specialTiles(Player &player, int position){
+    //make four special tiles and then also this probablility
     int randomTile = rand() % 100 + 1;
     if(randomTile ==96){
         cout << "You landed on a Shortcut Tile! You've been given the golden opportunity to leap ahead four tiles!\n";
@@ -668,7 +669,7 @@ int main(){
         cin >> character2Name;
     }
     
-    for(int i = 0; i < allCharacters.size(); i++){//gotta find the character, then the candies, then the candies in the candies file
+    for(int i = 0; i < allCharacters.size(); i++){//find the character, then the candies, then the candies in the candies file
         if(character2Name == allCharacters[i].name){
             character2Found = true;
             for(int j = 0; j < allCharacters[i].candies.size(); j++){//k is needed
@@ -685,7 +686,7 @@ int main(){
         cin.ignore(1000,'\n');
         cout << "Not a valid character, try again:\n";
         cin >> character2Name;
-        for(int i = 0; i < allCharacters.size(); i++){//gotta find the character, then the candies, then the candies in the candies file
+        for(int i = 0; i < allCharacters.size(); i++){//find the character, then the candies, then the candies in the candies file
             if(character2Name == allCharacters[i].name){
                 for(int j = 0; j < allCharacters[i].candies.size(); j++){//k is needed
                     for(int k = 0; k < allCandies.size(); k++){
@@ -860,9 +861,9 @@ int main(){
             player1.setStamina(player1.getStamina() - 1);
             hasTurn1 = Calamities(player1);
             hiddenTreasures(player1, game_board.getPlayer1Position(), allRiddles);
-            specialTiles(player1);
+            specialTiles(player1,game_board.getPlayer1Position());
         }
-        else if(menu1Choice == 2){//need to do conditionals depending on players candy type
+        else if(menu1Choice == 2){
             bool candyFound = false;
             cin.ignore(1000,'\n');
             cout << "Here is a list of your candies:\n";
