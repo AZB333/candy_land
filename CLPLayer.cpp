@@ -285,9 +285,9 @@ Candy Player::findImmunityCandy(){
 }
 
 Candy Player::findMagicalCandy(){
-    Candy empty = {"","","",0,"",0};
+    Candy empty = {"not found","","",0,"",0};
     
-    for(int i = 0; i > 9; i++){
+    for(int i = 0; i < 9; i++){
         if(_inventory[i].candy_type == "magical"){
             return _inventory[i];
         }
