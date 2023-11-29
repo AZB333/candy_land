@@ -514,6 +514,40 @@ void removeCharacter(vector<Character> &characters, string name){
 }
 
 
+
+void menu1Option1(Player &player, string player1Name, Board &game_board, bool &hasTurn, vector<Riddle> allRiddles){
+    int movePlayer1;
+    int specialTileResult;
+    int menu1Choice;
+    movePlayer1 = determineMoveAmount(game_board.getPlayer1Position(), player.drawCard());
+    game_board.movePlayer1(movePlayer1);
+    game_board.displayBoard();
+    player.setStamina(player.getStamina() - 1);
+    hasTurn = Calamities(player);
+    hiddenTreasures(player, game_board.getPlayer1Position(), allRiddles);
+    specialTileResult = specialTiles(player,game_board.getPlayer1Position());
+    if(specialTileResult == 1){
+        game_board.movePlayer1(4);
+    }
+    else if(specialTileResult == 2){//might need to make each menu item a function
+    cout << "It's " << player1Name << "'s turn\nPlease select a menu option\n";//begins menu choices
+    cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
+    cin >> menu1Choice;
+    while(menu1Choice != 1 && menu1Choice != 2 && menu1Choice != 3){
+    cin.clear();
+    cin.ignore(1000,'\n');
+    cout << "Invalid choice, try again\n";
+    cin >> menu1Choice;
+}
+    }
+    else if(specialTileResult == 3){
+        game_board.movePlayer1(-4);
+    }
+    else if(specialTileResult == 4){
+        game_board.movePlayer1(movePlayer1 * -1);
+    }
+}
+
 int main(){
     srand((unsigned) time(NULL));
     Board game_board; //game prep variables
@@ -556,7 +590,7 @@ int main(){
     Store store3;
     int store1Pos = rand() % 27 + 1;
     if(store1Pos % 3 == 1){
-        store1Pos -= 1;
+        store1Pos += 2;//this eliminates that chance that store1 is on tile 0
     } else if(store1Pos % 3 == 2){
         store1Pos += 1;
     }
@@ -887,7 +921,7 @@ int main(){
         
 
             if(menu1Choice == 1){
-                movePlayer1 = determineMoveAmount(game_board.getPlayer1Position(), player1.drawCard());
+                /*movePlayer1 = determineMoveAmount(game_board.getPlayer1Position(), player1.drawCard());
                 game_board.movePlayer1(movePlayer1);
                 // game_board.displayBoard();
                 player1.setStamina(player1.getStamina() - 1);
@@ -914,6 +948,8 @@ int main(){
                 else if(specialTileResult == 4){
                     game_board.movePlayer1(movePlayer1 * -1);
                 }
+                */
+               menu1Option1(player1,player1Name,game_board,hasTurn1,allRiddles);
             }
             else if(menu1Choice == 2){
                 bool candyFound = false;
