@@ -39,6 +39,8 @@ class Player{
         bool hasImmunityCandy();
         Candy findImmunityCandy();
         Candy findMagicalCandy();
+        int determineImmunityStrength(Candy);
+        int determinePoisonStrength(Candy);
 
 };
 

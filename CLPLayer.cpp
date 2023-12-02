@@ -273,11 +273,21 @@ bool Player::hasImmunityCandy(){
     return false;
 }
 
-Candy Player::findImmunityCandy(){
+Candy Player::findImmunityCandy(){//finds highest strength candy first
     Candy empty = {"","","",0,"",0};
     
     for(int i = 0; i < 9; i++){
-        if(_inventory[i].candy_type == "immunity"){
+        if(_inventory[i].candy_type == "immunity" && _inventory[i].effect_value == 3){
+            return _inventory[i];
+        }
+    }
+    for(int i = 0; i < 9; i++){
+        if(_inventory[i].candy_type == "immunity" && _inventory[i].effect_value == 2){
+            return _inventory[i];
+        }
+    }
+    for(int i = 0; i < 9; i++){
+        if(_inventory[i].candy_type == "immunity" && _inventory[i].effect_value == 1){
             return _inventory[i];
         }
     }
@@ -293,4 +303,30 @@ Candy Player::findMagicalCandy(){
         }
     }
     return empty;
+}
+
+int Player::determineImmunityStrength(Candy immunityCandy){
+    if(immunityCandy.effect_value == 1){
+        return 1;
+    }
+    else if(immunityCandy.effect_value == 2){
+        return 2;
+    }
+    else if(immunityCandy.effect_value == 3){
+        return 3;
+    }
+    return 0;
+}
+
+int Player::determinePoisonStrength(Candy poisonCandy){
+    if(poisonCandy.effect_value == -10){
+        return 1;
+    }
+    else if(poisonCandy.effect_value == -15){
+        return 2;
+    }
+    else if(poisonCandy.effect_value == -20){
+        return 3;
+    }
+    return 0;
 }
