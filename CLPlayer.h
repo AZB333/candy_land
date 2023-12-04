@@ -4,6 +4,11 @@
 #include "Store.h"
 using namespace std;
 
+struct Card{
+    string color;
+    bool x2;
+};
+
 
 class Player{
     private:

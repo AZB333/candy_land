@@ -345,7 +345,6 @@ int specialTiles(Player &player, int position){
 }
 
 bool answerRiddle(vector<Riddle> riddles){
-    cin.ignore(1000,'\n');
     int riddleIndex = rand() % riddles.size();
     string riddleToSolve = riddles[riddleIndex].question;
     string riddleAnswer;
@@ -376,16 +375,23 @@ void hiddenTreasures(Player &player, int position,vector<Riddle> riddles){
         if(riddleSolved == true){
             if(treasureType > 0 && treasureType <= 30){
                 int staminaRefill = rand() % 20 + 10;
-                cout << "You found a hidden treasure! Your stamina has been replenished by " << staminaRefill << " units!\n";
+                int stamOverflow = staminaRefill;
                 player.setStamina(player.getStamina() + staminaRefill);
+                if(player.getStamina() > 100){
+                    stamOverflow = 130 - player.getStamina();
+                    player.setStamina(100);
+                }
+                cout << "You found a hidden treasure! Your stamina has been replenished by " << stamOverflow << " units!\n";
             }
             else if(treasureType > 30 && treasureType <= 40){
-                int goldGain = rand() % 20 + 20;
-                cout << "You found a hidden treasure! You have found " << goldGain << " gold!\n";
+                int goldGain = rand() % 20 + 10;
+                int goldOverflow = goldGain;
                 player.setGold(player.getGold() + goldGain);
                 if(player.getGold() > 100){
+                    goldOverflow = 140 - player.getGold();
                     player.setGold(100);
                 }
+                cout << "You found a hidden treasure! You have found " << goldOverflow << " gold!\n";
             }
             else if(treasureType > 40 && treasureType <= 70){
                 Candy robbersRepel = {"Robber's Repel","An anti-robbery shield, safeguarding the player's gold from potential theft by others during their journey","protection",0,"repel",0};
@@ -655,15 +661,21 @@ void menu2Option(Player &player, Player &opponent,Board &board, int gummyTile, s
         cout << "Immunity candies are used when they need to be, so you don't need to use them here\n";
     }
     else if(player.findCandy(candyToUse).candy_type == "jellybean"){//jellybean candy
-        cout << "You have used " << candyToUse << ". Your stamina is increased by " << player.findCandy(candyToUse).effect_value << " points.\n";
         player.setStamina(player.getStamina() + player.findCandy(candyToUse).effect_value);
-        player.removeCandy(candyToUse);
+        int stamOverflow;
         if(player.getStamina() > 100){
+            stamOverflow = 150 - player.getStamina();
             player.setStamina(100);
         }
+        cout << "You have used " << candyToUse << ". Your stamina is increased by " << stamOverflow << " points.\n";
+        player.removeCandy(candyToUse);
     }
     else if(player.findCandy(candyToUse).candy_type == "treasure"){//treasure hunter's truffle
+        player.removeCandy(candyToUse);
         hiddenTreasures(player,100,allRiddles);//acts as though player has found a hidden treasure
+    }
+    else if(player.findCandy(candyToUse).candy_type == "repel"){
+        cout << "You can only use this if you land on the same tile as another player!\n";
     }
 }
 
@@ -675,7 +687,7 @@ void menu3Option(Player player, string playerName, string characterName){
     cout << "Gold: " << player.getGold() << endl;
 }
 
-int main(){
+int main(){ //same tile constraints, find out how many candies are supposed to start with, fix stam and coin overflow math
     srand((unsigned) time(NULL));
     Board game_board; //game prep variables
     Player player1;

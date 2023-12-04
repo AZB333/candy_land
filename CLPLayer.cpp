@@ -172,24 +172,37 @@ bool Player::removeCandy(string name){
 }
 
 int Player::drawCard(){
+    Card card;
     double random = rand() % 100 + 1;
     if(random > 0 && random <= 30){
         cout << "You drew a Marshmallow Magenta card. Your game piece advances to Magenta tile. Here's the updated trail\n";
+        card.color = "magenta";
+        card.x2 = false;
         return 1;
     } else if(random > 30  && random <= 60){
         cout << "You drew a Minty Green card. Your game piece advances to Green tile. Here's the updated trail\n";
+        card.color = "green";
+        card.x2 = false;
         return 2;
     } else if(random > 60  && random <= 90){
         cout << "You drew a Bubblegum Blue card. Your game piece advances to Blue tile. Here's the updated trail\n";
+        card.color = "blue";
+        card.x2 = false;
         return 3;
     } else if(random > 90  && random <= 93){
         cout << "You drew a Double Marshmallow Magenta card. Your game piece advances two Magenta tiles. Here's the updated trail\n";
+        card.color = "magenta";
+        card.x2 = true;
         return 4;
     } else if(random > 93  && random <= 96){
         cout << "You drew a Double Minty Green card. Your game piece advances two Green tiles. Here's the updated trail\n";
+        card.color = "green";
+        card.x2 = true;
         return 5;
     } else if(random > 96  && random <= 100){
         cout << "You drew a Double Bubblegum Blue card. Your game piece advances two Blue tiles. Here's the updated trail\n";
+        card.color = "blue";
+        card.x2 = true;
         return 6;
     } 
     return 0;
