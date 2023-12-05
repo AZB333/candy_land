@@ -70,16 +70,16 @@ void Player::setEffect(string effect){
 }
 
 void Player::printInventory(){
-    for(int i = getCandyAmount(); i < 9; i++){
-        _inventory[i].name = "Empty";
-    }
-
     for(int i = 0; i < _MAX_CANDY_AMOUNT; i++){
         cout << "[" << _inventory[i].name << "]  ";
         if(i == 2 || i == 5){
             cout << endl;
         }
     }
+      for(int i = getCandyAmount(); i < 9; i++){
+        _inventory[i].name = "Empty";
+    }
+
 }
 Candy Player::findCandy(string candy_name){
     Candy desiredCandy = {"","","",0,"",0};
@@ -247,7 +247,7 @@ bool Player::playRockPaperScissors(){
 
 void Player::populatePlayer(string character){
     if(character == "Toffee_Todd"){
-        setStamina(200);
+        setStamina(100);
         setGold(20);
         return;
     }
@@ -257,12 +257,12 @@ void Player::populatePlayer(string character){
         return;
     }
     else if(character == "Sour_Saul"){
-        setStamina(100);
+        setStamina(80);
         setGold(60);
         return;
     }
     else if(character == "Honey_Harold"){
-        setStamina(150);
+        setStamina(90);
         setGold(40);
         return;
     }
@@ -280,6 +280,15 @@ bool Player::hasMagicCandy(){
 bool Player::hasImmunityCandy(){
     for(int i = 0; i < 9; i++){
         if(_inventory[i].candy_type == "immunity"){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Player::hasRobbersRepel(){
+    for(int i = 0; i < 9; i++){
+        if(_inventory[i].candy_type == "repel"){
             return true;
         }
     }

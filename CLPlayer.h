@@ -22,12 +22,12 @@ class Player{
         Player();
         Player(int, double, string, Candy[], const int);
 
-        int getCandyAmount() const;
+        int getCandyAmount() const;//getters
         int getStamina() const;
         double getGold() const;
         string getEffect() const;
 
-        void setCandyAmount(int);
+        void setCandyAmount(int);//setters
         void setStamina(int);
         void setGold(double);
         void setEffect(string);
@@ -36,15 +36,18 @@ class Player{
         Candy findCandy(string);
         bool addCandy(Candy); 
         bool removeCandy(string);
-
         int drawCard();
         bool playRockPaperScissors();
         void populatePlayer(string);
-        bool hasMagicCandy();
+
+        bool hasMagicCandy();//functions to determine if a player has a certain candy
         bool hasImmunityCandy();
-        Candy findImmunityCandy();
+        bool hasRobbersRepel();
+
+        Candy findImmunityCandy();//returns desired candy types
         Candy findMagicalCandy();
-        int determineImmunityStrength(Candy);
+
+        int determineImmunityStrength(Candy);//used for menu option 2 using poison candy
         int determinePoisonStrength(Candy);
 
 };
