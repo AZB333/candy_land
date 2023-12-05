@@ -40,7 +40,7 @@ vector<Candy> readCandy(string file_name, vector<Candy> candies){ //loads candy 
         string price = "";
         int actualPrice = 0;
         getline(candyFile, line);
-        while(getline(candyFile, line)){
+        while(getline(candyFile, line)){//gets everything between '|'
             stringstream ss(line);
             int iterator = 0;
             Candy current_candy;
@@ -81,7 +81,7 @@ vector<Candy> readCandy(string file_name, vector<Candy> candies){ //loads candy 
     return candies;
 }
 
-vector<Character> readCharacter(string fileName, vector<Character> characters){
+vector<Character> readCharacter(string fileName, vector<Character> characters){//reads character file
     ifstream characterFile;
     characterFile.open(fileName);
     if(characterFile.fail()){
@@ -89,7 +89,6 @@ vector<Character> readCharacter(string fileName, vector<Character> characters){
         return characters;
     }
     else{
-        //character name ,stamina, gold,candies
         string name = "";
         string stamina = "";
         int actualStamina = 0;
@@ -98,7 +97,7 @@ vector<Character> readCharacter(string fileName, vector<Character> characters){
         string candyLine;
         string line;
         getline(characterFile, line);
-        while(getline(characterFile, line)){
+        while(getline(characterFile, line)){//gets everything between '|'
             vector<string> candyNames;
             stringstream ss(line);
             int iterator = 0;
@@ -118,7 +117,7 @@ vector<Character> readCharacter(string fileName, vector<Character> characters){
                     actualGold = stoi(gold);
                 } else if(iterator == 3){
                     stringstream candySS(line);
-                    while(getline(candySS, line, ',')){
+                    while(getline(candySS, line, ',')){//gets every candy
                         candyNames.push_back(line);
                     }
                 }
@@ -128,9 +127,6 @@ vector<Character> readCharacter(string fileName, vector<Character> characters){
             current_character.gold = actualGold;
             for(int i = 0; i < candyNames.size(); i++){
                 current_character.candies.push_back(candyNames[i]);
-            }
-            for(int i = candyNames.size(); i < 9; i++){
-                current_character.candies.push_back("Empty");
             }
             characters.push_back(current_character);
             }
@@ -311,12 +307,15 @@ bool Calamities(Player &player){//player is passed by reference
 }
 
 int specialTiles(Player &player, int position){
-    //make four special tiles and then also this probablility
+    bool onSpecialTile = false;
     int specialTile1 = rand() % 21 + 1;
     int specialTile2 = rand() % 21 + 20;
     int specialTile3 = rand() % 21 + 41;
     int specialTile4 = rand() % 21 + 61;
-    bool onSpecialTile = false;
+    int landedOnTile = rand() % 100 + 1;
+    if(landedOnTile > 75 && landedOnTile < 100){
+        onSpecialTile = true;
+    }
     if(position == specialTile1 || position == specialTile2 || position == specialTile3 ||position == specialTile4){
         onSpecialTile = true;
     }
@@ -353,7 +352,7 @@ bool answerRiddle(vector<Riddle> riddles){
     cout << "To earn the hidden treasure, you must answer this riddle\n";
     cout << riddles[riddleIndex].question;
     cout << endl;
-    getline(cin, riddleAnswer);
+    cin >> riddleAnswer;
     if(riddleAnswer != riddles[riddleIndex].answer){
         cout << "Unfortunately that is incorrect, the correct answer was " << riddles[riddleIndex].answer << endl;
         return false;
@@ -464,14 +463,15 @@ void displayCharacters(vector<Character> characters){
         cout << "Stamina: " <<characters[i].stamina << " " << endl;
         cout << "Gold: " <<characters[i].gold << " " << endl;
         cout << "Candies: \n";
+        int candyCount = 0;
         for(int j = 0; j < characters[i].candies.size(); j++){
             cout << "[" << characters[i].candies[j] << "]   ";
-            if(j > 0 && j % 3 == 2){
+            candyCount++;
+            if(candyCount % 3 == 0 && j < characters[i].candies.size() - 1){
                 cout << endl;
             }
         }
-        
-        cout << "------------------------------------------\n";
+        cout << "\n----------------------------------------------\n";
     }
 }
 
@@ -576,13 +576,26 @@ void sameTileCheck(Player &movedPlayer, Player &initialPlayer, string initialPla
             }
             if(useRepel == 'y' || useRepel == 'Y'){
                 cout << "You have used Robber's Repel to avoid being robbed and move " << initialPlayerName << " back one spot!\n";
+                movedPlayer.removeCandy("Robber's Repel");
             }
             else{
                 cout << "You willingly chose to be robbed by " << initialPlayerName << ", losing " << goldLost << " gold\n";
+                initialPlayer.setGold(initialPlayer.getGold() + goldLost);
+                if(initialPlayer.getGold() > 100){
+                    initialPlayer.setGold(100);
+                }
+                movedPlayer.setGold(movedPlayer.getGold() - goldLost);
+                if(movedPlayer.getGold() < 0){
+                    movedPlayer.setGold(0);
+                }
             }
         }
         else{
             cout << "Unfortunately you do not have the Robber's Repel candy, and " << initialPlayerName << " has taken " << goldLost << " gold from you\n";
+            initialPlayer.setGold(initialPlayer.getGold() + goldLost);
+            if(initialPlayer.getGold() > 100){
+                initialPlayer.setGold(100);
+            }
         }
     }
 }
@@ -694,6 +707,9 @@ void menu2Option(Player &player, Player &opponent,Board &board, int gummyTile, s
     else if(player.findCandy(candyToUse).candy_type == "repel"){
         cout << "You can only use this if you land on the same tile as another player!\n";
     }
+    else if(player.findCandy(candyToUse).name == "Empty"){
+        cout << "You gain the magical powers of empty, where nothing happens\n";
+    }
 }
 
 void menu3Option(Player player, string playerName, string characterName){
@@ -705,23 +721,23 @@ void menu3Option(Player player, string playerName, string characterName){
 }
 
 
-void menu1Option1(Player &player, Player &player2, string player1Name, string player2Name, string character1Name, Board &game_board, bool &hasTurn, vector<Riddle> allRiddles, int gummyTile, string candyToUse){
+void menu1Option1(Player &mainPlayer, Player &otherPlayer, string mainPlayerName, string otherPlayerName, string character1Name, Board &game_board, bool &hasTurn, vector<Riddle> allRiddles, int gummyTile, string candyToUse){
     int movePlayer1;
     int specialTileResult;
     int menu1Choice;
-    movePlayer1 = determineMoveAmount(game_board.getPlayer1Position(), player.drawCard());
+    movePlayer1 = determineMoveAmount(game_board.getPlayer1Position(), mainPlayer.drawCard());
     game_board.movePlayer1(movePlayer1);
     game_board.displayBoard();
-    sameTileCheck(player,player2,player2Name,game_board.getPlayer1Position(),game_board.getPlayer2Position());
-    player.setStamina(player.getStamina() - 1);
-    hasTurn = Calamities(player);
-    hiddenTreasures(player, game_board.getPlayer1Position(), allRiddles);
-    specialTileResult = specialTiles(player,game_board.getPlayer1Position());
+    sameTileCheck(mainPlayer,otherPlayer,otherPlayerName,game_board.getPlayer1Position(),game_board.getPlayer2Position());
+    mainPlayer.setStamina(mainPlayer.getStamina() - 1);
+    hasTurn = Calamities(mainPlayer);
+    hiddenTreasures(mainPlayer, game_board.getPlayer1Position(), allRiddles);
+    specialTileResult = specialTiles(mainPlayer,game_board.getPlayer1Position());
     if(specialTileResult == 1){
         game_board.movePlayer1(4);
     }
     else if(specialTileResult == 2){//might need to make each menu item a function
-        cout << "It's " << player1Name << "'s turn\nPlease select a menu option\n";//begins menu choices
+        cout << "It's " << mainPlayerName << "'s turn\nPlease select a menu option\n";//begins menu choices
         cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
         cin >> menu1Choice;
         while(menu1Choice != 1 && menu1Choice != 2 && menu1Choice != 3){
@@ -732,9 +748,9 @@ void menu1Option1(Player &player, Player &player2, string player1Name, string pl
         }
         while(menu1Choice != 1){//only drawing a card ends the turn
             if(menu1Choice == 2){
-                menu2Option(player,player2,game_board,gummyTile,candyToUse, allRiddles);
-                cout << "It's " << player1Name << "'s turn\nPlease select a menu option\n";
-                cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
+                menu2Option(mainPlayer,otherPlayer,game_board,gummyTile,candyToUse, allRiddles);
+                cout << "It's " << mainPlayerName << "'s turn\nPlease select a menu option\n";
+                cout << "1.  Draw a card\n2.  Use candy\n3.  Show mainPlayer stats\n";
                 cin >> menu1Choice;
                 while(menu1Choice != 1 && menu1Choice != 2 && menu1Choice != 3){
                     cin.clear();
@@ -744,8 +760,8 @@ void menu1Option1(Player &player, Player &player2, string player1Name, string pl
                 }
             }
             else if(menu1Choice == 3){
-                menu3Option(player,player1Name,character1Name);
-                cout << "It's " << player1Name << "'s turn\nPlease select a menu option\n";
+                menu3Option(mainPlayer,mainPlayerName,character1Name);
+                cout << "It's " << mainPlayerName << "'s turn\nPlease select a menu option\n";
                 cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
                 cin >> menu1Choice;
                 while(menu1Choice != 1 && menu1Choice != 2 && menu1Choice != 3){
@@ -757,7 +773,7 @@ void menu1Option1(Player &player, Player &player2, string player1Name, string pl
             }
         }
         if(menu1Choice == 1){
-            menu1Option1(player,player2,player1Name,player2Name, character1Name,game_board,hasTurn,allRiddles, gummyTile, candyToUse);
+            menu1Option1(mainPlayer,otherPlayer,mainPlayerName,otherPlayerName, character1Name,game_board,hasTurn,allRiddles, gummyTile, candyToUse);
         }
     }
     else if(specialTileResult == 3){
@@ -768,23 +784,23 @@ void menu1Option1(Player &player, Player &player2, string player1Name, string pl
     }
 }
 
-void menu2Option1(Player &player, Player &player2, string player1Name, string player2Name, string character2Name, Board &game_board, bool &hasTurn, vector<Riddle> allRiddles, int gummyTile, string candyToUse){
+void menu2Option1(Player &mainPlayer, Player &otherPlayer, string mainPlayerName, string otherPlayerName, string character2Name, Board &game_board, bool &hasTurn, vector<Riddle> allRiddles, int gummyTile, string candyToUse){
     int movePlayer2;
     int specialTileResult;
     int menu2Choice;
-    movePlayer2 = determineMoveAmount(game_board.getPlayer2Position(), player.drawCard());
+    movePlayer2 = determineMoveAmount(game_board.getPlayer2Position(), mainPlayer.drawCard());
     game_board.movePlayer2(movePlayer2);
     game_board.displayBoard();
-    sameTileCheck(player2,player,player1Name,game_board.getPlayer2Position(),game_board.getPlayer1Position());
-    player.setStamina(player.getStamina() - 1);
-    hasTurn = Calamities(player);
-    hiddenTreasures(player, game_board.getPlayer2Position(), allRiddles);
-    specialTileResult = specialTiles(player,game_board.getPlayer2Position());
+    sameTileCheck(otherPlayer,mainPlayer,otherPlayerName,game_board.getPlayer2Position(),game_board.getPlayer1Position());
+    mainPlayer.setStamina(mainPlayer.getStamina() - 1);
+    hasTurn = Calamities(mainPlayer);
+    hiddenTreasures(mainPlayer, game_board.getPlayer2Position(), allRiddles);
+    specialTileResult = specialTiles(mainPlayer,game_board.getPlayer2Position());
     if(specialTileResult == 1){
         game_board.movePlayer2(4);
     }
     else if(specialTileResult == 2){//might need to make each menu item a function
-        cout << "It's " << player2Name << "'s turn\nPlease select a menu option\n";//begins menu choices
+        cout << "It's " << mainPlayerName << "'s turn\nPlease select a menu option\n";//begins menu choices
         cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
         cin >> menu2Choice;
         while(menu2Choice != 1 && menu2Choice != 2 && menu2Choice != 3){
@@ -795,8 +811,8 @@ void menu2Option1(Player &player, Player &player2, string player1Name, string pl
         }
         while(menu2Choice != 1){//only drawing a card ends the turn
             if(menu2Choice == 2){
-                menu2Option(player2,player,game_board,gummyTile,candyToUse, allRiddles);
-                cout << "It's " << player2Name << "'s turn\nPlease select a menu option\n";
+                menu2Option(otherPlayer,mainPlayer,game_board,gummyTile,candyToUse, allRiddles);
+                cout << "It's " << otherPlayerName << "'s turn\nPlease select a menu option\n";
                 cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
                 cin >> menu2Choice;
                 while(menu2Choice != 1 && menu2Choice != 2 && menu2Choice != 3){
@@ -807,8 +823,8 @@ void menu2Option1(Player &player, Player &player2, string player1Name, string pl
                 }
             }
             else if(menu2Choice == 3){
-                menu3Option(player2,player2Name,character2Name);
-                cout << "It's " << player2Name << "'s turn\nPlease select a menu option\n";
+                menu3Option(otherPlayer,otherPlayerName,character2Name);
+                cout << "It's " << otherPlayerName << "'s turn\nPlease select a menu option\n";
                 cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
                 cin >> menu2Choice;
                 while(menu2Choice != 1 && menu2Choice != 2 && menu2Choice != 3){
@@ -820,11 +836,11 @@ void menu2Option1(Player &player, Player &player2, string player1Name, string pl
             }
         }
         if(menu2Choice == 1){
-            menu2Option1(player,player2,player2Name,player2Name, character2Name,game_board,hasTurn,allRiddles, gummyTile, candyToUse);
+            menu2Option1(mainPlayer,otherPlayer,mainPlayerName,otherPlayerName, character2Name,game_board,hasTurn,allRiddles, gummyTile, candyToUse);
         }
     }
     else if(specialTileResult == 3){
-        game_board.movePlayer1(-4);
+        game_board.movePlayer2(-4);
     }
     else if(specialTileResult == 4){
         game_board.movePlayer2(movePlayer2 * -1);
@@ -874,7 +890,7 @@ int main(){//finish making player 2 functional
     Store store3;
     int store1Pos = rand() % 27 + 1;
     if(store1Pos % 3 == 1){
-        store1Pos -= 1;
+        store1Pos += 2;
     } else if(store1Pos % 3 == 2){
         store1Pos += 1;
     }
@@ -1258,7 +1274,7 @@ int main(){//finish making player 2 functional
             }
             
             if(menu1Choice == 1){
-                menu1Option1(player1,player2,player1Name,player2Name, character1Name, game_board,hasTurn1,allRiddles, gummyTile, candyToUse);
+                menu1Option1(player1,player2,player1Name,player2Name,character1Name,game_board,hasTurn1,allRiddles,gummyTile,candyToUse);
             }
         }
 
@@ -1272,9 +1288,42 @@ int main(){//finish making player 2 functional
 
         
          if(hasTurn2 == false){//checking if player has their turn, put before player 2
-            cout << player2Name << " has lost their turn, it is now " << player2Name << "'s turn\n";
+            cout << "It's " << player1Name << "'s turn\nPlease select a menu option\n";//begins menu choices
             cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
-            cin >> menu2Choice;
+            cin >> menu1Choice;
+            while(menu1Choice != 1 && menu1Choice != 2 && menu1Choice != 3){
+                cin.clear();
+                cin.ignore(1000,'\n');
+                cout << "Invalid choice, try again\n";
+                cin >> menu1Choice;
+            }
+        
+            while(menu1Choice != 1){//only drawing a card ends the turn
+                if(menu1Choice == 2){//need to make hidden treasure candies work
+                    menu2Option(player1,player2,game_board,gummyTile,candyToUse, allRiddles);
+                    cout << "It's " << player1Name << "'s turn\nPlease select a menu option\n";
+                    cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
+                    cin >> menu1Choice;
+                    while(menu1Choice != 1 && menu1Choice != 2 && menu1Choice != 3){
+                        cin.clear();
+                        cin.ignore(1000,'\n');
+                        cout << "Invalid choice, try again\n";
+                        cin >> menu1Choice;
+                    }
+                }
+                else if(menu1Choice == 3){
+                    menu3Option(player1,player1Name,character1Name);
+                    cout << "It's " << player1Name << "'s turn\nPlease select a menu option\n";
+                    cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
+                    cin >> menu1Choice;
+                    while(menu1Choice != 1 && menu1Choice != 2 && menu1Choice != 3){
+                        cin.clear();
+                        cin.ignore(1000,'\n');
+                        cout << "Invalid choice, try again\n";
+                        cin >> menu1Choice;
+                    }
+                }
+            }
             if(p2Lose2Turns == false){
                 hasTurn2 = true;
             }
@@ -1320,9 +1369,8 @@ int main(){//finish making player 2 functional
                     }
                 }
             }
-            
             if(menu2Choice == 1){
-                menu2Option1(player2,player1,player2Name,player2Name, character2Name, game_board,hasTurn2,allRiddles, gummyTile, candyToUse);
+                menu2Option1(player2,player1,player2Name,player1Name, character2Name, game_board,hasTurn2,allRiddles, gummyTile, candyToUse);
             }
         }
         
