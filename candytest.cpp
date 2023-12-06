@@ -539,11 +539,6 @@ void visit2CandyStore(bool canVisitStatus, Player &player, Store &store){
             }
             
         }
-        cout << "Player 2 inventory is now\n";
-        player.printInventory();
-        player.setGold(player.getGold() - player.findCandy(storeChoice).price);
-        cout << endl;
-
     }
 }
 
@@ -735,6 +730,8 @@ void menu1Option1(Player &mainPlayer, Player &otherPlayer, string mainPlayerName
     specialTileResult = specialTiles(mainPlayer,game_board.getPlayer1Position());
     if(specialTileResult == 1){
         game_board.movePlayer1(4);
+        cout << "Here is the updated board\n";
+        game_board.displayBoard();
     }
     else if(specialTileResult == 2){//might need to make each menu item a function
         cout << "It's " << mainPlayerName << "'s turn\nPlease select a menu option\n";//begins menu choices
@@ -778,9 +775,13 @@ void menu1Option1(Player &mainPlayer, Player &otherPlayer, string mainPlayerName
     }
     else if(specialTileResult == 3){
         game_board.movePlayer1(-4);
+        cout << "Here is the updated board\n";
+        game_board.displayBoard();
     }
     else if(specialTileResult == 4){
         game_board.movePlayer1(movePlayer1 * -1);
+        cout << "Here is the updated board\n";
+        game_board.displayBoard();
     }
 }
 
@@ -798,6 +799,8 @@ void menu2Option1(Player &mainPlayer, Player &otherPlayer, string mainPlayerName
     specialTileResult = specialTiles(mainPlayer,game_board.getPlayer2Position());
     if(specialTileResult == 1){
         game_board.movePlayer2(4);
+        cout << "Here is the updated board\n";
+        game_board.displayBoard();
     }
     else if(specialTileResult == 2){//might need to make each menu item a function
         cout << "It's " << mainPlayerName << "'s turn\nPlease select a menu option\n";//begins menu choices
@@ -841,9 +844,13 @@ void menu2Option1(Player &mainPlayer, Player &otherPlayer, string mainPlayerName
     }
     else if(specialTileResult == 3){
         game_board.movePlayer2(-4);
+        cout << "Here is the updated board\n";
+        game_board.displayBoard();
     }
     else if(specialTileResult == 4){
         game_board.movePlayer2(movePlayer2 * -1);
+        cout << "Here is the updated board\n";
+        game_board.displayBoard();
     }
 }
 
@@ -864,6 +871,8 @@ int main(){//finish making player 2 functional
     allRiddles = readRiddles(riddleFileName, allRiddles);
     bool rpsStatus;
     bool endOfGame = false;
+    bool player1Win = false;
+    bool player2Win = false;
     bool hasTurn1 = true;
     bool hasTurn2 = true;
 
@@ -1123,10 +1132,10 @@ int main(){//finish making player 2 functional
 
     
     game_board.resetBoard();
+    game_board.setPlayer1Position(80);
+    game_board.setPlayer2Position(79);
 
     while(endOfGame == false){  
-        
-       
         if(can1UseStore1 == true && game_board.getPlayer1Position() == store1Pos){
             store1.populateStore(candyFileName, allCandies);
             visit1CandyStore(can1UseStore1,player1,store1);
@@ -1191,7 +1200,7 @@ int main(){//finish making player 2 functional
         
 
         if(hasTurn1 == false){//checking if player has their turn, put before player 1
-            cout << "It's " << player2Name << "'s turn\nPlease select a menu option\n";//begins menu choices
+            cout << player1Name << " has lost their turn. It's " << player2Name << "'s turn\nPlease select a menu option\n";//begins menu choices
             cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
             cin >> menu2Choice;
             while(menu2Choice != 1 && menu2Choice != 2 && menu2Choice != 3){
@@ -1227,12 +1236,20 @@ int main(){//finish making player 2 functional
                     }
                 }
             }
+            if(menu1Choice == 1){
+                menu2Option1(player2,player1,player2Name,player1Name,character2Name,game_board,hasTurn2,allRiddles,gummyTile,candyToUse);
+            }
             if(p1Lose2Turns == false){
                 hasTurn1 = true;
             }
             else{
                 hasTurn1 = false;
             }
+            if(game_board.getPlayer2Position() >= 83){//if player 2 wins
+            player2Win = true;
+            endOfGame = true;
+            break;
+        }
         }
         
         if(hasTurn1 == true){
@@ -1277,6 +1294,16 @@ int main(){//finish making player 2 functional
                 menu1Option1(player1,player2,player1Name,player2Name,character1Name,game_board,hasTurn1,allRiddles,gummyTile,candyToUse);
             }
         }
+        if(game_board.getPlayer1Position() >= 83){//if player 1 wins
+            player1Win = true;
+            endOfGame = true;
+            break;
+        }
+        if(game_board.getPlayer2Position() >= 83){//if player 2 wins
+            player2Win = true;
+            endOfGame = true;
+            break;
+        }
 
         //////////then do player 2//////////
         //////////then do player 2//////////
@@ -1288,7 +1315,7 @@ int main(){//finish making player 2 functional
 
         
          if(hasTurn2 == false){//checking if player has their turn, put before player 2
-            cout << "It's " << player1Name << "'s turn\nPlease select a menu option\n";//begins menu choices
+            cout << player2Name << " Has lost their turn. It's " << player1Name << "'s turn\nPlease select a menu option\n";//begins menu choices
             cout << "1.  Draw a card\n2.  Use candy\n3.  Show player stats\n";
             cin >> menu1Choice;
             while(menu1Choice != 1 && menu1Choice != 2 && menu1Choice != 3){
@@ -1324,12 +1351,20 @@ int main(){//finish making player 2 functional
                     }
                 }
             }
+            if(menu1Choice == 1){
+                menu2Option1(player1,player2,player1Name,player2Name, character1Name, game_board,hasTurn1,allRiddles, gummyTile, candyToUse);
+            }
             if(p2Lose2Turns == false){
                 hasTurn2 = true;
             }
             else{
                 hasTurn2 = false;
             }
+            if(game_board.getPlayer1Position() >= 83){//if player 1 wins
+            player1Win = true;
+            endOfGame = true;
+            break;
+        }
         }
         
         if(hasTurn2 == true){
@@ -1373,9 +1408,46 @@ int main(){//finish making player 2 functional
                 menu2Option1(player2,player1,player2Name,player1Name, character2Name, game_board,hasTurn2,allRiddles, gummyTile, candyToUse);
             }
         }
-        
-    
+        if(game_board.getPlayer1Position() >= 83){//if player 1 wins
+            player1Win = true;
+            endOfGame = true;
+            break;
+        }
+        if(game_board.getPlayer2Position() >= 83){//if player 2 wins
+            player2Win = true;
+            endOfGame = true;
+            break;
+        }
     }
+
+    ofstream results("results.txt");//results file to write to 
+    if(player1Win == true){
+        cout << "\nCongratulations " << player1Name << " for making it to the castle and conquering Candyland! Here are your stats!\n";
+        cout << "Player name: " << player1Name << endl;
+        cout << "Character: " << character1Name << endl;
+        cout << "Stamina: " << player1.getStamina() << endl;
+        cout << "Gold: " << player1.getGold() << endl;
+        results << "\nCongratulations " << player1Name << " for making it to the castle and conquering Candyland! Here are your stats!\n";
+        results << "Player name: " << player1Name << endl;
+        results << "Character: " << character2Name << endl;
+        results << "Stamina: " << player1.getStamina() << endl;
+        results << "Gold: " << player1.getGold() << endl;
+    }
+    if(player2Win == true){
+        cout << "\nCongratulations " << player2Name << " for making it to the castle and conquering Candyland! Here are your stats!\n";
+        cout << "Player name: " << player2Name << endl;
+        cout << "Character: " << character2Name << endl;
+        cout << "Stamina: " << player2.getStamina() << endl;
+        cout << "Gold: " << player2.getGold() << endl;
+        results << "\nCongratulations " << player2Name << " for making it to the castle and conquering Candyland! Here are your stats!\n";
+        results << "Player name: " << player2Name << endl;
+        results << "Character: " << character2Name << endl;
+        results << "Stamina: " << player2.getStamina() << endl;
+        results << "Gold: " << player2.getGold() << endl;
+    }
+
+    results.close();
+    return 0;
 }
     /*
     ---------------------------------
