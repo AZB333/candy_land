@@ -1,6 +1,6 @@
 
-Congratulations aleqz for making it to the castle and conquering Candyland! Here are your stats!
-Player name: aleqz
+Congratulations sam for making it to the castle and conquering Candyland! Here are your stats! Thanks for playing!
+Player name: sam
 Character: Honey_Harold
-Stamina: 73
-Gold: 60
+Stamina: 46
+Gold: 23
