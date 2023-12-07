@@ -52,7 +52,7 @@ void Store::populateStore(string fileName, vector<Candy> allCandies){//gives the
 }
 
 Candy Store::findCandy(string candyName){//finds a candy in the store
-    Candy desiredCandy = {"","","",0,"",0};//default candy is empty
+    Candy desiredCandy = {"not a candy","","",0,"",0};//default candy is empty
     string lowerCandyName = candyName;//lower parameter
     string lowerInventoryName;//lower inventory
     for(int i = 0; i < lowerCandyName.length(); i++){

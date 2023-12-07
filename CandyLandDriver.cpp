@@ -679,7 +679,7 @@ void menu2Option(Player &player, Player &opponent,Board &board, int gummyTile, s
     else if(player.findCandy(candyToUse).candy_type == "gummy"){//gummy candies
         cout << "Which tile do you want to place " << candyToUse << " - gummy candy?\n";
         cin >> gummyTile;
-        while(gummyTile < 0 || gummyTile > 83){//if they choose a tile outside of range
+        while(gummyTile < 0 || gummyTile > 82){//if they choose a tile outside of range
             cin.clear();
             cout << "Invalid input. Please try again\n";
             cin >> gummyTile;
@@ -733,7 +733,7 @@ void menu1Option1(Player &mainPlayer, Player &otherPlayer, string mainPlayerName
     movePlayer1 = determineMoveAmount(game_board.getPlayer1Position(), mainPlayer.drawCard());//move amount is based on current position and card drawn
     game_board.movePlayer1(movePlayer1);//moves the player
     game_board.displayBoard();
-    if(game_board.getPlayer1Position() >= 83){//if player 1 wins
+    if(game_board.getPlayer1Position() >= 82){//if player 1 wins
         player1Win = true;
         endOfGame = true;
         return;
@@ -745,6 +745,7 @@ void menu1Option1(Player &mainPlayer, Player &otherPlayer, string mainPlayerName
     specialTileResult = specialTiles(mainPlayer,game_board.getPlayer1Position());//checks for special tiles
     if(specialTileResult == 1){
         game_board.movePlayer1(4);//moves player 4 tiles ahead
+        game_board.displayBoard();//displays updated board
     }
     else if(specialTileResult == 2){//gives player another turn, displays the menu again
         cout << "It's " << mainPlayerName << "'s turn\nPlease select a menu option\n";//begins menu choices
@@ -788,9 +789,11 @@ void menu1Option1(Player &mainPlayer, Player &otherPlayer, string mainPlayerName
     }
     else if(specialTileResult == 3){//moves player 4 tiles back
         game_board.movePlayer1(-4);
+        game_board.displayBoard();//shows the updated board
     }
     else if(specialTileResult == 4){//moves player to original position
         game_board.movePlayer1(movePlayer1 * -1);
+        game_board.displayBoard();
     }
 }
 
@@ -801,18 +804,19 @@ void menu2Option1(Player &mainPlayer, Player &otherPlayer, string mainPlayerName
     movePlayer2 = determineMoveAmount(game_board.getPlayer2Position(), mainPlayer.drawCard());//move amount determined by player position and draw card result
     game_board.movePlayer2(movePlayer2);//moves the player
     game_board.displayBoard();
-    if(game_board.getPlayer2Position() >= 83){//if player 2 wins
+    if(game_board.getPlayer2Position() >= 82){//if player 2 wins
         player2Win = true;
         endOfGame = true;
         return;
     }
-    sameTileCheck(otherPlayer,mainPlayer,otherPlayerName,game_board.getPlayer2Position(),game_board.getPlayer1Position());//checks if both players are on the same tile
+    sameTileCheck(mainPlayer,otherPlayer,otherPlayerName,game_board.getPlayer2Position(),game_board.getPlayer1Position());//checks if both players are on the same tile
     mainPlayer.setStamina(mainPlayer.getStamina() - 1);//removes 1 stamina per turn
     hasTurn = Calamities(mainPlayer);//having a turn is determined by calamity function
     hiddenTreasures(mainPlayer, game_board.getPlayer2Position(), allRiddles);//checks for hidden treasures
     specialTileResult = specialTiles(mainPlayer,game_board.getPlayer2Position());//checks for special tiles
     if(specialTileResult == 1){
         game_board.movePlayer2(4);//moves player four tiles ahead
+        game_board.displayBoard();//displays updated board
     }
     else if(specialTileResult == 2){//displays menu again for another turn
         cout << "It's " << mainPlayerName << "'s turn\nPlease select a menu option\n";//begins menu choices
@@ -856,9 +860,11 @@ void menu2Option1(Player &mainPlayer, Player &otherPlayer, string mainPlayerName
     }
     else if(specialTileResult == 3){
         game_board.movePlayer2(-4);//moves player back four tiles
+        game_board.displayBoard();
     }
     else if(specialTileResult == 4){
         game_board.movePlayer2(movePlayer2 * -1);//moves player back to original position
+        game_board.displayBoard();
     }
 }
 
@@ -1125,7 +1131,7 @@ int main(){
 
     game_board.resetBoard();
 
-    while(endOfGame == false){  
+   while(endOfGame == false){  
         if(can1UseStore1 == true && game_board.getPlayer1Position() == store1Pos){//if player1 is on store1 tile for first time
             store1.populateStore(candyFileName, allCandies);
             visit1CandyStore(can1UseStore1,player1,store1);
@@ -1230,6 +1236,11 @@ int main(){
             if(menu1Choice == 1){//calls draw card function for player 2
                 menu2Option1(player2,player1,player2Name,player1Name,character2Name,game_board,hasTurn2,allRiddles,gummyTile,candyToUse,player2Win,endOfGame);
             }
+            if(game_board.getPlayer1Position() >= 82){//if player 1 wins
+                player1Win = true;
+                endOfGame = true;
+                break;
+            }
             if(p1Lose2Turns == false){//sets turn loss to true
                 hasTurn1 = true;
             }
@@ -1277,6 +1288,11 @@ int main(){
             if(menu1Choice == 1){//draw function for player 1
                 menu1Option1(player1,player2,player1Name,player2Name,character1Name,game_board,hasTurn1,allRiddles,gummyTile,candyToUse,player1Win,endOfGame);
             }
+            if(game_board.getPlayer1Position() >= 82){//if player 1 wins
+                player1Win = true;
+                endOfGame = true;
+                break;
+            }
         }
 
         //////////////////////menu options for player 2//////////////////////////
@@ -1318,7 +1334,12 @@ int main(){
                 }
             }
             if(menu1Choice == 1){//draw function for player 1
-                menu2Option1(player1,player2,player1Name,player2Name, character1Name, game_board,hasTurn1,allRiddles, gummyTile, candyToUse,player1Win,endOfGame);
+                menu1Option1(player1,player2,player1Name,player2Name, character1Name, game_board,hasTurn1,allRiddles, gummyTile, candyToUse,player1Win,endOfGame);
+            }
+            if(game_board.getPlayer1Position() >= 82){//if player 1 wins
+                player1Win = true;
+                endOfGame = true;
+                break;
             }
             if(p2Lose2Turns == false){//if player already lost 2 turns, set it to true
                 hasTurn2 = true;
@@ -1365,6 +1386,11 @@ int main(){
             }
             if(menu2Choice == 1){//draw function for player 2
                 menu2Option1(player2,player1,player2Name,player1Name, character2Name, game_board,hasTurn2,allRiddles, gummyTile, candyToUse,player2Win,endOfGame);
+            }
+            if(game_board.getPlayer2Position() >= 82){//if player 2 wins
+                player2Win = true;
+                endOfGame = true;
+                break;
             }
         }
     }
